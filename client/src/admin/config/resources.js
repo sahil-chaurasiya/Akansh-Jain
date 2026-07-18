@@ -135,7 +135,7 @@ export const SINGLETONS = [
     ],
   },
   {
-    key: 'about-section', label: 'About Section (Home + About page)', api: '/about-section',
+    key: 'about-section', label: 'About Page - Content (/about only)', api: '/about-section',
     fields: [
       { name: 'subheading', label: 'Small Badge Label (e.g. "Top choice for cosmetic surgery treatments")', type: 'text' },
       { name: 'heading', label: 'Main Heading', type: 'text' },
@@ -149,6 +149,28 @@ export const SINGLETONS = [
       { name: 'missionDescription', label: 'Our Mission - Description', type: 'textarea' },
       { name: 'visionHeading', label: 'Our Vision - Heading', type: 'text' },
       { name: 'visionDescription', label: 'Our Vision - Description', type: 'textarea' },
+      { name: 'testimonialsHeading', label: 'Testimonials Block - Heading', type: 'text' },
+      { name: 'testimonialsSubheading', label: 'Testimonials Block - Subheading', type: 'text' },
+      { name: 'reviewPlatforms', label: 'Review Platform Badges (JSON array: [{ "name": "Google", "countText": "300+ Reviews", "icon": "fa-brands fa-google", "link": "#" }])', type: 'json' },
+    ],
+  },
+  {
+    key: 'home-about-section', label: 'Home Page - About Box (/ only)', api: '/home-about-section',
+    fields: [
+      { name: 'subheading', label: 'Small Eyebrow Label (e.g. "About Us")', type: 'text' },
+      { name: 'heading', label: 'Main Heading', type: 'text' },
+      { name: 'description', label: 'Description', type: 'textarea' },
+      { name: 'primaryImage', label: 'Main Photo', type: 'image' },
+      { name: 'secondaryImage', label: 'Secondary Overlapping Photo', type: 'image' },
+      { name: 'badgeIcon', label: 'Badge Icon (Font Awesome class)', type: 'text' },
+      { name: 'badgeText', label: 'Badge Text (e.g. "Best Awarded Company")', type: 'text' },
+      { name: 'primaryButton', label: 'Primary Pill Button (JSON: { "text": "", "link": "", "icon": "" })', type: 'json' },
+      { name: 'secondaryButton', label: 'Secondary Pill Button (JSON: { "text": "", "link": "", "icon": "" })', type: 'json' },
+      { name: 'featurePoints', label: 'Checklist Points (JSON array: [{ "text": "" }])', type: 'json' },
+      { name: 'ctaText', label: '"Read More" Button Text', type: 'text' },
+      { name: 'ctaLink', label: '"Read More" Button Link', type: 'text' },
+      { name: 'ratingValue', label: 'Rating Value (e.g. "4.9")', type: 'text' },
+      { name: 'ratingText', label: 'Rating Caption (e.g. "100+ 5star")', type: 'text' },
     ],
   },
   {

@@ -7,7 +7,7 @@ import { useLegacyScripts } from '../hooks/useLegacyScripts.js';
 
 export default function Home() {
   const [data, setData] = useState({
-    slides: [], about: null, services: [], whoWeAre: null,
+    slides: [], homeAbout: null, services: [], whoWeAre: null,
     howItWork: [], bookingSection: null, testimonials: [],
     gallery: [], posts: [], settings: null,
   });
@@ -16,7 +16,7 @@ export default function Home() {
   useEffect(() => {
     Promise.all([
       api.get('/slides?page=home'),
-      api.get('/about-section'),
+      api.get('/home-about-section'),
       api.get('/services?limit=3'),
       api.get('/who-we-are'),
       api.get('/how-it-work-steps'),
@@ -25,10 +25,10 @@ export default function Home() {
       api.get('/gallery-items?limit=6'),
       api.get('/posts?limit=3'),
     ])
-      .then(([slides, about, services, who, how, booking, testi, gallery, posts]) => {
+      .then(([slides, homeAbout, services, who, how, booking, testi, gallery, posts]) => {
         setData({
           slides: slides.data.data,
-          about: about.data.data,
+          homeAbout: homeAbout.data.data,
           services: services.data.data,
           whoWeAre: who.data.data,
           howItWork: how.data.data,
@@ -128,7 +128,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* about */}
+      {/* about (home-only, independent from /about page content) */}
       <section id="about" className="about-area about-p pt-150 pb-150 p-relative fix">
         <div className="animations-02">
           <img src="/assets/img/features/ab-ani.png" alt="an-img-01" />
@@ -138,7 +138,7 @@ export default function Home() {
             <div className="col-lg-4 col-md-12 col-sm-12">
               <div className="s-about-box fix p-relative wow fadeInLeft animated" data-animation="fadeInLeft" data-delay=".4s">
                 <div className="img">
-                  <img src={data.about?.images?.[0]?.url || '/assets/img/features/about-img-01.png'} alt="img" />
+                  <img src={data.homeAbout?.primaryImage?.url || '/assets/img/features/about-img-01.png'} alt="img" />
                 </div>
                 <div className="cartifact-box">
                   <div className="icon">
@@ -147,7 +147,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="text">
-                    <h3>Best Awarded Company</h3>
+                    <h3>{data.homeAbout?.badgeText || 'Best Awarded Company'}</h3>
                   </div>
                 </div>
                 <div className="animations-01">
@@ -164,20 +164,74 @@ export default function Home() {
                         <span className="line">
                           <img src="/assets/img/bg/h-icon.png" alt="img" />
                         </span>{' '}
-                        About Us
+                        {data.homeAbout?.subheading || 'About Us'}
                       </h5>
-                      <h2 className="text-anime-style-3">{data.about?.heading || 'Transform Your Look With Precision'}</h2>
+                      <h2 className="text-anime-style-3">{data.homeAbout?.heading || 'Transform Your Look With Precision'}</h2>
                     </div>
                     <p className="pline">
-                      {data.about?.description ||
-                        'Plastic surgery is a specialized branch of medicine that focuses on restoring, enhancing, or reshaping the body for both medical and aesthetic purposes.'}
+                      {data.homeAbout?.description ||
+                        'Plastic surgery is a specialized branch of medicine that focuses on restoring, enhancing, or reshaping the body for both medical and aesthetic purposes. It helps people improve their appearance.'}
                     </p>
                   </div>
                 </div>
-                <div className="about-outer-btn pl-20 mt-20">
-                  <Link to="/about" className="btn mr-15">
-                    Read More <i className="fa-light fa-arrow-right-long"></i>
-                  </Link>
+
+                <div className="about-content2 mt-20">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <div className="img">
+                        <img
+                          src={data.homeAbout?.secondaryImage?.url || '/assets/img/features/about-img-02.png'}
+                          alt="img"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-8">
+                      <div className="about-btn pl-20">
+                        <div>
+                          <Link to={data.homeAbout?.primaryButton?.link || '/services'}>
+                            <img src="/assets/img/features/ab-icon-01.png" alt="img" />{' '}
+                            {data.homeAbout?.primaryButton?.text || 'Transfer Surgery'}
+                          </Link>
+                        </div>
+                        <div>
+                          <Link to={data.homeAbout?.secondaryButton?.link || '/contact'}>
+                            <img src="/assets/img/features/ab-icon-02.png" alt="img" />{' '}
+                            {data.homeAbout?.secondaryButton?.text || 'Support 24/7'}
+                          </Link>
+                        </div>
+                      </div>
+
+                      <ul className="pl-20">
+                        {(data.homeAbout?.featurePoints?.length
+                          ? data.homeAbout.featurePoints
+                          : [{ text: 'Shaping Confidence Through Expert Surgery' }, { text: 'Discover Beauty Beyond Your Imagination' }]
+                        ).map((p, i) => (
+                          <li key={i}>
+                            <i className="fa-regular fa-arrow-right"></i> {p.text}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="about-outer-btn pl-20">
+                        <div>
+                          <Link to={data.homeAbout?.ctaLink || '/about'} className="btn mr-15">
+                            {data.homeAbout?.ctaText || 'Read More'} <i className="fa-light fa-arrow-right-long"></i>
+                          </Link>
+                        </div>
+                        <div className="review">
+                          <div className="icon">
+                            <img src="/assets/img/features/ab-icon-03.png" alt="shape" />
+                          </div>
+                          <div className="text">
+                            <div className="star">
+                              {data.homeAbout?.ratingValue || '4.9'}/ <img src="/assets/img/features/start-s.png" alt="shape" />
+                            </div>
+                            <p>{data.homeAbout?.ratingText || '100+ 5star'}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

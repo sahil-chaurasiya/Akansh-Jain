@@ -8543,9 +8543,15 @@ section:hover .section-title h2::before {
 .f-logo-area {
     max-width: 1550px;
     background: #ffffff0f;
-    padding: 30px 60px;
-    border-radius: 20px;
-    margin-bottom: 80px;
+    padding: 16px 40px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+.f-logo-area .f-widget-title img {
+    width: 100%;
+    max-width: 160px;
+    height: auto;
 }
 
 .f-logo-area-2 {

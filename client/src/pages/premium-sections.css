@@ -1,0 +1,166 @@
+/* Premium section styles for the /about page "Testimonials - Happy Clients" block —
+   driven by fields on the AboutSection singleton (testimonialsHeading, reviewPlatforms, ...).
+   Palette matches the rest of the site: #D96B3D (accent), #0A1119 (dark text), #FDF8F5 (cream).
+   Scoped to .about-testi-premium so it can't leak into other sections. */
+
+.about-testi-premium {
+  position: relative;
+  padding: 130px 0 140px;
+  background: #FDF8F5;
+  overflow: hidden;
+}
+
+.about-testi-premium .atp-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.about-testi-premium .atp-header h2 {
+  font-size: 42px;
+  color: #D96B3D;
+}
+
+.about-testi-premium .atp-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 40px;
+  align-items: stretch;
+}
+
+@media (max-width: 991px) {
+  .about-testi-premium .atp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-testi-premium .atp-quote-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 60px 55px 45px;
+  box-shadow: 0 20px 60px rgba(10, 17, 25, 0.06);
+}
+
+.about-testi-premium .atp-quote-mark {
+  position: absolute;
+  top: 22px;
+  left: 34px;
+  font-family: Georgia, serif;
+  font-size: 110px;
+  line-height: 1;
+  color: rgba(217, 107, 61, 0.14);
+  pointer-events: none;
+}
+
+.about-testi-premium .atp-quote-text {
+  position: relative;
+  font-size: 19px;
+  line-height: 1.8;
+  font-style: italic;
+  color: #33353a;
+  margin-bottom: 34px;
+}
+
+.about-testi-premium .atp-quote-footer h5 {
+  margin-bottom: 8px;
+  color: #0A1119;
+}
+
+.about-testi-premium .atp-stars {
+  color: #f5a623;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.about-testi-premium .atp-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.about-testi-premium .atp-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(10, 17, 25, 0.15);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.about-testi-premium .atp-dot.active {
+  background: #D96B3D;
+  transform: scale(1.2);
+}
+
+.about-testi-premium .atp-platforms {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 36px 34px;
+  box-shadow: 0 20px 60px rgba(10, 17, 25, 0.06);
+}
+
+.about-testi-premium .atp-platforms h4 {
+  font-size: 19px;
+  line-height: 1.5;
+  color: #0A1119;
+  margin-bottom: 26px;
+}
+
+.about-testi-premium .atp-platforms ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about-testi-premium .atp-platforms li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(10, 17, 25, 0.07);
+}
+
+.about-testi-premium .atp-platforms li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.about-testi-premium .atp-p-icon {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FDF8F5;
+  color: #D96B3D;
+  font-size: 18px;
+}
+
+.about-testi-premium .atp-p-text h6 {
+  margin-bottom: 4px;
+  color: #0A1119;
+  font-size: 16px;
+}
+
+.about-testi-premium .atp-p-count {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #D96B3D;
+  border: 1px solid rgba(217, 107, 61, 0.35);
+  border-radius: 50px;
+  padding: 3px 14px;
+}
+
+@media (max-width: 575px) {
+  .about-testi-premium .atp-quote-card {
+    padding: 50px 26px 34px;
+  }
+  .about-testi-premium .atp-header h2 {
+    font-size: 30px;
+  }
+}

@@ -6,6 +6,7 @@ import PageMeta from '../components/PageMeta.jsx';
 import Breadcrumb from '../components/Breadcrumb.jsx';
 import { useLegacyScripts } from '../hooks/useLegacyScripts.js';
 import './about-premium.css';
+import './premium-sections.css';
 
 const DEFAULT_HIGHLIGHTS = [
   { icon: 'fa-solid fa-user-doctor', text: 'Board-Certified Surgeons' },
@@ -18,6 +19,7 @@ export default function About() {
   const [about, setAbout] = useState(null);
   const [testimonials, setTestimonials] = useState([]);
   const [ready, setReady] = useState(false);
+  const [activeTesti, setActiveTesti] = useState(0);
 
   useEffect(() => {
     Promise.all([api.get('/about-section'), api.get('/testimonials?limit=3')])
@@ -134,21 +136,71 @@ export default function About() {
         </section>
       </div>
 
-      <section className="testimonial-area pt-150 pb-120 p-relative fix">
-        <div className="container">
-          <div className="row">
-            {testimonials.map((t) => (
-              <div className="col-lg-4 col-md-6" key={t._id}>
-                <div className="testimonial-box mb-30">
-                  <p>{t.quote}</p>
-                  <h5 className="mt-15 mb-0">{t.name}</h5>
-                  <span>{t.role}</span>
+      {testimonials.length > 0 && (
+        <section className="about-testi-premium">
+          <div className="container">
+            <div className="atp-header wow fadeInUp animated" data-animation="fadeInUp" data-delay=".1s">
+              <h2 className="text-anime-style-3">{about?.testimonialsHeading || 'Testimonials - Happy Clients'}</h2>
+            </div>
+            <div className="atp-grid">
+              <div className="atp-quote-card wow fadeInUp animated" data-animation="fadeInUp" data-delay=".2s">
+                <span className="atp-quote-mark">&ldquo;</span>
+                <p className="atp-quote-text">{testimonials[activeTesti]?.quote}</p>
+                <div className="atp-quote-footer">
+                  <h5>{testimonials[activeTesti]?.name}</h5>
+                  {testimonials[activeTesti]?.role ? <span>{testimonials[activeTesti].role}</span> : null}
+                  <div className="atp-stars">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <i
+                        key={i}
+                        className={i < (testimonials[activeTesti]?.rating || 5) ? 'fa-solid fa-star' : 'fa-regular fa-star'}
+                      ></i>
+                    ))}
+                  </div>
                 </div>
+                {testimonials.length > 1 && (
+                  <div className="atp-dots">
+                    {testimonials.map((t, i) => (
+                      <button
+                        key={t._id}
+                        type="button"
+                        className={`atp-dot${i === activeTesti ? ' active' : ''}`}
+                        aria-label={`Show testimonial from ${t.name}`}
+                        onClick={() => setActiveTesti(i)}
+                      ></button>
+                    ))}
+                  </div>
+                )}
               </div>
-            ))}
+              <div className="atp-platforms wow fadeInUp animated" data-animation="fadeInUp" data-delay=".35s">
+                <h4>{about?.testimonialsSubheading || '#1 Choice of Patients for Aesthetics & Plastic Surgery'}</h4>
+                <ul>
+                  {(about?.reviewPlatforms?.length
+                    ? about.reviewPlatforms
+                    : [
+                        { name: 'Google', countText: '300+ Reviews', icon: 'fa-brands fa-google', link: '#' },
+                        { name: 'Practo', countText: '30+ Reviews', icon: 'fa-solid fa-notes-medical', link: '#' },
+                        { name: 'Facebook', countText: '5K+ Followers', icon: 'fa-brands fa-facebook-f', link: '#' },
+                      ]
+                  ).map((p, i) => (
+                    <li key={i}>
+                      <span className="atp-p-icon">
+                        <i className={p.icon || 'fa-solid fa-star'}></i>
+                      </span>
+                      <div className="atp-p-text">
+                        <h6>{p.name}</h6>
+                        <a href={p.link || '#'} target="_blank" rel="noreferrer" className="atp-p-count">
+                          {p.countText}
+                        </a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </Layout>
   );
 }
