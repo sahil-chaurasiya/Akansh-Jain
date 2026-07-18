@@ -44,6 +44,31 @@ export const useLegacyScripts = (ready = true, deps = []) => {
       script.src = `/assets/js/main.js?t=${Date.now()}`; // cache-bust so the browser re-fetches/re-executes
       script.setAttribute('data-legacy-init', 'main');
       script.async = false;
+
+      // main.js creates every ScrollTrigger (including the "fade-slide" hero animations)
+      // based on element positions AT THE MOMENT IT RUNS. If images (hero photo, avatar
+      // icon, etc.) haven't finished loading yet, the page is shorter/shifted than its final
+      // layout, so ScrollTrigger can compute the wrong "has this already scrolled past?"
+      // state for above-the-fold content — leaving it stuck at its hidden opacity:0 starting
+      // point forever. This is why the hero sometimes renders fine and sometimes doesn't: it
+      // depends on how fast images happen to load relative to this script running.
+      // Fix: once images are actually loaded, force ScrollTrigger to recompute (refresh)
+      // against the real, final layout so already-visible content gets its visible state.
+      const refreshScrollTrigger = () => {
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      };
+      script.onload = () => {
+        if (window.jQuery && window.jQuery.fn.imagesLoaded) {
+          window.jQuery(document.body).imagesLoaded(refreshScrollTrigger);
+        } else {
+          // Fallback if the imagesLoaded plugin isn't available for some reason.
+          setTimeout(refreshScrollTrigger, 400);
+        }
+        // Safety-net second refresh in case something (a late-arriving image, a slow
+        // network) still shifted layout after the first refresh ran.
+        setTimeout(refreshScrollTrigger, 1000);
+      };
+
       document.body.appendChild(script);
 
       if (window.AOS) {

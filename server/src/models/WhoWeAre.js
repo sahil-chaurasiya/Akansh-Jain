@@ -10,6 +10,7 @@ const whoWeAreSchema = new mongoose.Schema(
     heading: { type: String, default: '' },
     description: { type: String, default: '' },
     image: { url: String, publicId: String },
+    imageSecondary: { url: String, publicId: String },
     features: [featureItemSchema],
   },
   { timestamps: true }

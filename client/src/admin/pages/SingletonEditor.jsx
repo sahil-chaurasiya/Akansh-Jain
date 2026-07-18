@@ -9,6 +9,10 @@ export default function SingletonEditor() {
   const [values, setValues] = useState({});
   const [imageFiles, setImageFiles] = useState({});
   const [existingImages, setExistingImages] = useState({});
+  // imageArray fields (e.g. AboutSection.images): existing = already-saved {url,publicId} list,
+  // newFiles = freshly-picked File objects waiting to be uploaded on save.
+  const [imageArrays, setImageArrays] = useState({});
+  const [imageArrayNewFiles, setImageArrayNewFiles] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -20,13 +24,16 @@ export default function SingletonEditor() {
       const data = res.data.data;
       const next = {};
       const imgs = {};
+      const imgArrays = {};
       config.fields.forEach((f) => {
         if (f.type === 'json') next[f.name] = JSON.stringify(data[f.name] || [], null, 2);
         else if (f.type === 'image') imgs[f.name] = data[f.name]?.url || '';
+        else if (f.type === 'imageArray') imgArrays[f.name] = data[f.name] || [];
         else next[f.name] = data[f.name] ?? '';
       });
       setValues(next);
       setExistingImages(imgs);
+      setImageArrays(imgArrays);
       setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,7 +55,7 @@ export default function SingletonEditor() {
           } catch {
             throw new Error(`"${f.label}" is not valid JSON`);
           }
-        } else if (f.type !== 'image') {
+        } else if (f.type !== 'image' && f.type !== 'imageArray') {
           payload[f.name] = values[f.name];
         }
       }
@@ -60,6 +67,18 @@ export default function SingletonEditor() {
           fd.append('image', imageFiles[f.name]);
           const res = await api.post('/upload', fd);
           payload[f.name] = { url: res.data.data.url, publicId: res.data.data.publicId };
+        }
+        if (f.type === 'imageArray') {
+          const kept = imageArrays[f.name] || [];
+          const newFiles = imageArrayNewFiles[f.name] || [];
+          const uploaded = [];
+          for (const file of newFiles) {
+            const fd = new FormData();
+            fd.append('image', file);
+            const res = await api.post('/upload', fd);
+            uploaded.push({ url: res.data.data.url, publicId: res.data.data.publicId });
+          }
+          payload[f.name] = [...kept, ...uploaded];
         }
       }
 
@@ -90,6 +109,52 @@ export default function SingletonEditor() {
                   <img src={existingImages[f.name]} alt="" style={{ width: 100, display: 'block', marginBottom: 8, borderRadius: 4 }} />
                 )}
                 <input type="file" accept="image/*" onChange={(e) => setImageFiles((p) => ({ ...p, [f.name]: e.target.files[0] }))} />
+              </div>
+            );
+          }
+          if (f.type === 'imageArray') {
+            const kept = imageArrays[f.name] || [];
+            const pending = imageArrayNewFiles[f.name] || [];
+            return (
+              <div className="admin-form-group" key={f.name}>
+                <label>{f.label}</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 8 }}>
+                  {kept.map((img, i) => (
+                    <div key={img.publicId || img.url || i} style={{ position: 'relative' }}>
+                      <img src={img.url} alt="" style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 4, display: 'block' }} />
+                      <button
+                        type="button"
+                        onClick={() => setImageArrays((p) => ({ ...p, [f.name]: p[f.name].filter((_, idx) => idx !== i) }))}
+                        style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', border: 'none', background: '#c0392b', color: '#fff', cursor: 'pointer', lineHeight: '20px', padding: 0 }}
+                        title="Remove image"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  {pending.map((file, i) => (
+                    <div key={`new-${i}`} style={{ position: 'relative' }}>
+                      <img src={URL.createObjectURL(file)} alt="" style={{ width: 90, height: 90, objectFit: 'cover', borderRadius: 4, display: 'block', opacity: 0.7 }} />
+                      <button
+                        type="button"
+                        onClick={() => setImageArrayNewFiles((p) => ({ ...p, [f.name]: p[f.name].filter((_, idx) => idx !== i) }))}
+                        style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', border: 'none', background: '#c0392b', color: '#fff', cursor: 'pointer', lineHeight: '20px', padding: 0 }}
+                        title="Remove"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) =>
+                    setImageArrayNewFiles((p) => ({ ...p, [f.name]: [...(p[f.name] || []), ...Array.from(e.target.files)] }))
+                  }
+                />
+                <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>Add one or more photos. Click × to remove one.</p>
               </div>
             );
           }

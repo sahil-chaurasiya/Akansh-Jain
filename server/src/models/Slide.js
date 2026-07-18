@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 const slideSchema = new mongoose.Schema(
   {
     image: { url: String, publicId: String },
+    heroImage: { url: String, publicId: String },
+    clientAvatarsImage: { url: String, publicId: String },
     headline: { type: String, required: true, trim: true },
     subheading: { type: String, default: '' },
     ctaText: { type: String, default: '' },

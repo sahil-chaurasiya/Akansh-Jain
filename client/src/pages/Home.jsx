@@ -80,7 +80,7 @@ export default function Home() {
                       </div>
                       <div className="user-review fade-slide right">
                         <div className="icon">
-                          <img src="/assets/img/slider/h-client-img.png" alt="img" />
+                          <img src={slide?.clientAvatarsImage?.url || '/assets/img/slider/h-client-img.png'} alt="img" />
                         </div>
                         <div className="text">
                           <p>2,000+</p>
@@ -88,6 +88,38 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
+                    <div className="counter-outer fade-slide bottom">
+                      <ul>
+                        <li>
+                          <div className="counter-outer-box">
+                            <h3>50k+</h3>
+                            <p>Clients Review</p>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="counter-outer-box">
+                            <h3>100+</h3>
+                            <p>Expert Surgeon</p>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="counter-outer-box">
+                            <h3>20+</h3>
+                            <p>Award Winner</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="image-layer fade-slide right">
+                    <div className="play-box fade-slide top">
+                      <a href="https://www.youtube.com/watch?v=gyGsPlt06bo" className="popup-video" tabIndex="0">
+                        <img src="/assets/img/slider/slider-play.png" alt="shape" />
+                      </a>
+                    </div>
+                    <img src={slide?.heroImage?.url || '/assets/img/slider/header-img.png'} alt="img" />
                   </div>
                 </div>
               </div>
@@ -220,7 +252,7 @@ export default function Home() {
             <div className="row">
               <div className="col-lg-3 col-md-12 col-sm-12 d-none d-lg-block">
                 <div className="who-video wow fadeInLeft animated" data-animation="fadeInLeft" data-delay=".4s">
-                  <img src="/assets/img/bg/who-are-img-01.png" alt="icon01" />
+                  <img src={data.whoWeAre?.image?.url || '/assets/img/bg/who-are-img-01.png'} alt="icon01" />
                   <div className="play-box fade-slide top">
                     <a href="https://www.youtube.com/watch?v=gyGsPlt06bo" className="popup-video" tabIndex="0">
                       <img src="/assets/img/bg/play-2.png" alt="shape" />
@@ -264,7 +296,7 @@ export default function Home() {
               </div>
               <div className="col-lg-3 col-md-4 col-sm-12">
                 <div className="who-img wow fadeInRight animated" data-animation="fadeInRight" data-delay=".4s">
-                  <img src="/assets/img/bg/who-are-img-02.png" alt="icon01" />
+                  <img src={data.whoWeAre?.imageSecondary?.url || '/assets/img/bg/who-are-img-02.png'} alt="icon01" />
                 </div>
               </div>
             </div>

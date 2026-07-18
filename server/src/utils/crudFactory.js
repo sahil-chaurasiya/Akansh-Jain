@@ -11,7 +11,29 @@ import { uploadBufferToCloudinary, deleteFromCloudinary } from '../middleware/up
  *  - searchable: array of field names allowed for simple ?search= text match (optional)
  */
 export const makeCrudController = (Model, options = {}) => {
-  const { imageField = 'image', sortBy = { order: 1, createdAt: 1 }, searchable = [] } = options;
+  const {
+    imageField = 'image',
+    // New: pass imageFields: ['image', 'heroImage', ...] for resources with more than
+    // one uploadable image. Falls back to [imageField] so existing single-image
+    // resources (services, testimonials, etc.) keep working unchanged.
+    imageFields = [imageField],
+    sortBy = { order: 1, createdAt: 1 },
+    searchable = [],
+  } = options;
+
+  // req.file (upload.single) covers the legacy single-image case; req.files (upload.fields)
+  // covers the multi-image case. This helper normalizes both into a { fieldName: file } map.
+  const collectFiles = (req) => {
+    if (req.file) return { [imageField]: req.file };
+    if (req.files) {
+      const map = {};
+      imageFields.forEach((name) => {
+        if (req.files[name]?.[0]) map[name] = req.files[name][0];
+      });
+      return map;
+    }
+    return {};
+  };
 
   const list = asyncHandler(async (req, res) => {
     const filter = {};
@@ -51,9 +73,10 @@ export const makeCrudController = (Model, options = {}) => {
 
   const create = asyncHandler(async (req, res) => {
     const body = { ...req.body };
-    if (req.file) {
-      const uploaded = await uploadBufferToCloudinary(req.file.buffer, Model.collection.collectionName);
-      body[imageField] = { url: uploaded.url, publicId: uploaded.publicId };
+    const files = collectFiles(req);
+    for (const [fieldName, file] of Object.entries(files)) {
+      const uploaded = await uploadBufferToCloudinary(file.buffer, Model.collection.collectionName);
+      body[fieldName] = { url: uploaded.url, publicId: uploaded.publicId };
     }
     const item = await Model.create(body);
     res.status(201).json({ success: true, data: item });
@@ -66,12 +89,13 @@ export const makeCrudController = (Model, options = {}) => {
       throw new Error(`${Model.modelName} not found`);
     }
     const body = { ...req.body };
-    if (req.file) {
-      const uploaded = await uploadBufferToCloudinary(req.file.buffer, Model.collection.collectionName);
-      body[imageField] = { url: uploaded.url, publicId: uploaded.publicId };
+    const files = collectFiles(req);
+    for (const [fieldName, file] of Object.entries(files)) {
+      const uploaded = await uploadBufferToCloudinary(file.buffer, Model.collection.collectionName);
+      body[fieldName] = { url: uploaded.url, publicId: uploaded.publicId };
       // clean up the old image so we don't leak Cloudinary storage
-      if (item[imageField]?.publicId) {
-        await deleteFromCloudinary(item[imageField].publicId);
+      if (item[fieldName]?.publicId) {
+        await deleteFromCloudinary(item[fieldName].publicId);
       }
     }
     Object.assign(item, body);
@@ -85,8 +109,10 @@ export const makeCrudController = (Model, options = {}) => {
       res.status(404);
       throw new Error(`${Model.modelName} not found`);
     }
-    if (item[imageField]?.publicId) {
-      await deleteFromCloudinary(item[imageField].publicId);
+    for (const fieldName of imageFields) {
+      if (item[fieldName]?.publicId) {
+        await deleteFromCloudinary(item[fieldName].publicId);
+      }
     }
     await item.deleteOne();
     res.json({ success: true, data: {} });

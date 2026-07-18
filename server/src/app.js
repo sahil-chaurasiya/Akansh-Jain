@@ -46,16 +46,16 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 }
 
-// Global API rate limit (separate, stricter limit is applied on public form routes)
-app.use(
-  '/api',
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 300,
-    standardHeaders: true,
-    legacyHeaders: false,
-  })
-);
+// // Global API rate limit (separate, stricter limit is applied on public form routes)
+// app.use(
+//   '/api',
+//   rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 300,
+//     standardHeaders: true,
+//     legacyHeaders: false,
+//   })
+// );
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Lustre API is running', time: new Date().toISOString() });

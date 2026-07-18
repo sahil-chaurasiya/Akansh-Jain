@@ -23,8 +23,8 @@ export default function ResourceForm() {
     });
     return initial;
   });
-  const [imageFile, setImageFile] = useState(null);
-  const [existingImageUrl, setExistingImageUrl] = useState('');
+  const [imageFiles, setImageFiles] = useState({});
+  const [existingImages, setExistingImages] = useState({});
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -40,9 +40,11 @@ export default function ResourceForm() {
         else next[f.name] = data[f.name] ?? emptyValueFor(f.type);
       });
       setValues(next);
-      if (config.imageField && data[config.imageField]?.url) {
-        setExistingImageUrl(data[config.imageField].url);
-      }
+      const imgs = {};
+      config.fields.forEach((f) => {
+        if (f.type === 'image' && data[f.name]?.url) imgs[f.name] = data[f.name].url;
+      });
+      setExistingImages(imgs);
       setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +71,14 @@ export default function ResourceForm() {
           fd.append(f.name, values[f.name] ?? '');
         }
       });
-      if (imageFile) fd.append('image', imageFile);
+      Object.entries(imageFiles).forEach(([fieldName, file]) => {
+        if (!file) return;
+        // The primary image field is still sent under the literal "image" key so it keeps
+        // working with routes using upload.single('image'). Extra image fields (e.g. a
+        // resource with more than one photo) are sent under their real field name and
+        // require the route to use upload.fields([...]) instead — see slideRoutes.js.
+        fd.append(fieldName === config.imageField ? 'image' : fieldName, file);
+      });
 
       if (isNew) {
         const res = await api.post(config.api, fd);
@@ -99,10 +108,10 @@ export default function ResourceForm() {
             return (
               <div className="admin-form-group" key={f.name}>
                 <label>{f.label}</label>
-                {existingImageUrl && !imageFile && (
-                  <img src={existingImageUrl} alt="" style={{ width: 100, display: 'block', marginBottom: 8, borderRadius: 4 }} />
+                {existingImages[f.name] && !imageFiles[f.name] && (
+                  <img src={existingImages[f.name]} alt="" style={{ width: 100, display: 'block', marginBottom: 8, borderRadius: 4 }} />
                 )}
-                <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
+                <input type="file" accept="image/*" onChange={(e) => setImageFiles((p) => ({ ...p, [f.name]: e.target.files[0] }))} />
               </div>
             );
           }
