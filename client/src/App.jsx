@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 
 // Public pages
 import Home from './pages/Home.jsx';
-import Home2 from './pages/Home2.jsx';
 import About from './pages/About.jsx';
 import Services from './pages/Services.jsx';
 import ServiceDetail from './pages/ServiceDetail.jsx';
@@ -30,7 +29,6 @@ export default function App() {
     <Routes>
       {/* Public site */}
       <Route path="/" element={<Home />} />
-      <Route path="/home-2" element={<Home2 />} />
       <Route path="/about" element={<About />} />
       <Route path="/services" element={<Services />} />
       <Route path="/services/:slug" element={<ServiceDetail />} />

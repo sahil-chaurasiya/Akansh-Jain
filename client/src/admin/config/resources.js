@@ -8,7 +8,7 @@ export const RESOURCES = [
       { name: 'subheading', label: 'Subheading', type: 'textarea' },
       { name: 'ctaText', label: 'CTA Text', type: 'text' },
       { name: 'ctaLink', label: 'CTA Link', type: 'text' },
-      { name: 'page', label: 'Page', type: 'select', options: ['home', 'home2'] },
+      { name: 'page', label: 'Page', type: 'select', options: ['home'] },
       { name: 'order', label: 'Order', type: 'number' },
       { name: 'image', label: 'Slide Background Image', type: 'image' },
       { name: 'heroImage', label: 'Hero Photo (right side of banner)', type: 'image' },
@@ -152,6 +152,29 @@ export const SINGLETONS = [
       { name: 'testimonialsHeading', label: 'Testimonials Block - Heading', type: 'text' },
       { name: 'testimonialsSubheading', label: 'Testimonials Block - Subheading', type: 'text' },
       { name: 'reviewPlatforms', label: 'Review Platform Badges (JSON array: [{ "name": "Google", "countText": "300+ Reviews", "icon": "fa-brands fa-google", "link": "#" }])', type: 'json' },
+
+      { name: 'academicProfileHeading', label: 'Academic Profile - Heading', type: 'text' },
+      { name: 'academicProfileText', label: 'Academic Profile - Text', type: 'textarea' },
+
+      { name: 'expertiseHeading', label: 'Expertise Section - Heading', type: 'text' },
+      { name: 'expertiseSubtext', label: 'Expertise Section - Subtext', type: 'text' },
+      {
+        name: 'expertiseStats',
+        label: 'Expertise Stats (one per line, format: Number | Label — e.g. 7,000+ | Gynecomastia)',
+        type: 'statLines',
+      },
+
+      { name: 'achievementsHeading', label: 'Achievements & Fellowship - Heading', type: 'text' },
+      { name: 'achievementsItems', label: 'Achievements & Fellowship - Items (one per line)', type: 'lines' },
+
+      { name: 'publicationsHeading', label: 'Publications & Presentation - Heading', type: 'text' },
+      { name: 'publicationsItems', label: 'Publications - Items (one per line)', type: 'lines' },
+
+      { name: 'awardsHeading', label: 'Awards - Heading', type: 'text' },
+      { name: 'awardsItems', label: 'Awards - Items (one per line)', type: 'lines' },
+
+      { name: 'presentationHeading', label: 'Presentation - Heading', type: 'text' },
+      { name: 'presentationItems', label: 'Presentation - Items (one per line)', type: 'lines' },
     ],
   },
   {
@@ -199,6 +222,62 @@ export const SINGLETONS = [
       { name: 'email', label: 'Email', type: 'text' },
       { name: 'officeHours', label: 'Office Hours', type: 'text' },
       { name: 'mapEmbedUrl', label: 'Map Embed URL', type: 'text' },
+    ],
+  },
+  {
+    key: 'page-meta-home', label: 'Browser Tab Title - Home Page', api: '/page-meta/home',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'page-meta-about', label: 'Browser Tab Title - About Page', api: '/page-meta/about',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'page-meta-services', label: 'Browser Tab Title - Services Page', api: '/page-meta/services',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'page-meta-projects', label: 'Browser Tab Title - Gallery Page', api: '/page-meta/projects',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'page-meta-blog', label: 'Browser Tab Title - Blog Page', api: '/page-meta/blog',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'page-meta-faq', label: 'Browser Tab Title - FAQ Page', api: '/page-meta/faq',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'page-meta-contact', label: 'Browser Tab Title - Contact Page', api: '/page-meta/contact',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'page-meta-thank-you', label: 'Browser Tab Title - Thank You Page', api: '/page-meta/thank-you',
+    fields: [
+      { name: 'title', label: 'Browser Tab Title', type: 'text' },
+      { name: 'metaDescription', label: 'Meta Description (shown in Google search results)', type: 'textarea' },
     ],
   },
 ];

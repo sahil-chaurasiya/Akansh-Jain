@@ -7,6 +7,7 @@ import Breadcrumb from '../components/Breadcrumb.jsx';
 import { useLegacyScripts } from '../hooks/useLegacyScripts.js';
 import './about-premium.css';
 import './premium-sections.css';
+import './profile-credentials.css';
 
 const DEFAULT_HIGHLIGHTS = [
   { icon: 'fa-solid fa-user-doctor', text: 'Board-Certified Surgeons' },
@@ -135,6 +136,80 @@ export default function About() {
           </div>
         </section>
       </div>
+
+      {/* Academic Profile / Expertise / Achievements / Publications / Awards / Presentation */}
+      <section className="pc-scope">
+        <div className="container">
+          <div className="pc-row">
+            <div className="pc-card wow fadeInUp animated" data-animation="fadeInUp" data-delay=".1s">
+              <h3>{about?.academicProfileHeading || 'Academic Profile'}</h3>
+              <p className="pc-text">{about?.academicProfileText}</p>
+            </div>
+            <div className="pc-card wow fadeInUp animated" data-animation="fadeInUp" data-delay=".2s">
+              <h3>{about?.expertiseHeading || 'Expertise In Plastic Surgery'}</h3>
+              {about?.expertiseSubtext && <p className="pc-subtext">{about.expertiseSubtext}</p>}
+              <div className="pc-stat-grid">
+                {(about?.expertiseStats || []).map((s, i) => (
+                  <div className="pc-stat" key={i}>
+                    <h4>{s.number}</h4>
+                    <span>{s.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="pc-row">
+            <div className="pc-card wow fadeInUp animated" data-animation="fadeInUp" data-delay=".1s">
+              <h3>{about?.achievementsHeading || 'Achievements and Fellowship'}</h3>
+              <ul className="pc-list">
+                {(about?.achievementsItems || []).map((item, i) => (
+                  <li key={i}>
+                    <i className="fa-solid fa-circle-check"></i>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="pc-card wow fadeInUp animated" data-animation="fadeInUp" data-delay=".2s">
+              <h3>{about?.publicationsHeading || 'Publications And Presentation'}</h3>
+              <ul className="pc-list">
+                {(about?.publicationsItems || []).map((item, i) => (
+                  <li key={i}>
+                    <i className="fa-solid fa-circle-check"></i>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="pc-row">
+            <div className="pc-card wow fadeInUp animated" data-animation="fadeInUp" data-delay=".1s">
+              <h3>{about?.awardsHeading || 'Awards'}</h3>
+              <ul className="pc-list">
+                {(about?.awardsItems || []).map((item, i) => (
+                  <li key={i}>
+                    <i className="fa-solid fa-circle-check"></i>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="pc-card wow fadeInUp animated" data-animation="fadeInUp" data-delay=".2s">
+              <h3>{about?.presentationHeading || 'Presentation'}</h3>
+              <ul className="pc-list">
+                {(about?.presentationItems || []).map((item, i) => (
+                  <li key={i}>
+                    <i className="fa-solid fa-circle-check"></i>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {testimonials.length > 0 && (
         <section className="about-testi-premium">

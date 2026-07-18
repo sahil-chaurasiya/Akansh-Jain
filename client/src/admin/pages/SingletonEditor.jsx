@@ -29,6 +29,9 @@ export default function SingletonEditor() {
         if (f.type === 'json') next[f.name] = JSON.stringify(data[f.name] || [], null, 2);
         else if (f.type === 'image') imgs[f.name] = data[f.name]?.url || '';
         else if (f.type === 'imageArray') imgArrays[f.name] = data[f.name] || [];
+        else if (f.type === 'lines') next[f.name] = (data[f.name] || []).join('\n');
+        else if (f.type === 'statLines')
+          next[f.name] = (data[f.name] || []).map((it) => `${it.number || ''} | ${it.label || ''}`).join('\n');
         else next[f.name] = data[f.name] ?? '';
       });
       setValues(next);
@@ -55,6 +58,20 @@ export default function SingletonEditor() {
           } catch {
             throw new Error(`"${f.label}" is not valid JSON`);
           }
+        } else if (f.type === 'lines') {
+          payload[f.name] = (values[f.name] || '')
+            .split('\n')
+            .map((line) => line.trim())
+            .filter(Boolean);
+        } else if (f.type === 'statLines') {
+          payload[f.name] = (values[f.name] || '')
+            .split('\n')
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line) => {
+              const [number, ...rest] = line.split('|');
+              return { number: (number || '').trim(), label: rest.join('|').trim() };
+            });
         } else if (f.type !== 'image' && f.type !== 'imageArray') {
           payload[f.name] = values[f.name];
         }
@@ -167,6 +184,38 @@ export default function SingletonEditor() {
                   value={values[f.name] || ''}
                   onChange={(e) => setValues((p) => ({ ...p, [f.name]: e.target.value }))}
                 />
+              </div>
+            );
+          }
+          if (f.type === 'lines') {
+            return (
+              <div className="admin-form-group" key={f.name}>
+                <label>{f.label}</label>
+                <textarea
+                  style={{ minHeight: 140 }}
+                  placeholder="Type one item per line..."
+                  value={values[f.name] || ''}
+                  onChange={(e) => setValues((p) => ({ ...p, [f.name]: e.target.value }))}
+                />
+                <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
+                  Just type each point on its own line — no special formatting needed.
+                </p>
+              </div>
+            );
+          }
+          if (f.type === 'statLines') {
+            return (
+              <div className="admin-form-group" key={f.name}>
+                <label>{f.label}</label>
+                <textarea
+                  style={{ minHeight: 140 }}
+                  placeholder={'7,000+ | Gynecomastia\n5,000+ | Hair Transplantation'}
+                  value={values[f.name] || ''}
+                  onChange={(e) => setValues((p) => ({ ...p, [f.name]: e.target.value }))}
+                />
+                <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
+                  One per line. Type the number, then a "|", then the label — e.g. "7,000+ | Gynecomastia".
+                </p>
               </div>
             );
           }

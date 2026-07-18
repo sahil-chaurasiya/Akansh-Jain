@@ -18,6 +18,21 @@ import { useEffect } from 'react';
  *
  * `ready` should be true once the API data this page depends on has actually rendered, so we
  * don't run animations (SplitText, counters, AOS, etc.) against empty placeholder markup.
+ *
+ * IMPORTANT — why we wait for images before running main.js at all:
+ * main.js runs top-to-bottom the instant the <script> tag executes, and it computes every
+ * animation's starting position (GSAP ScrollTrigger's "fade-slide"/"text-anime" hero reveals,
+ * WOW.js's "wow fadeInUp/fadeInLeft/..." reveals used across the site, etc.) based on the
+ * page's layout AT THAT EXACT MOMENT. If the hero photo, avatar icons, etc. haven't finished
+ * loading yet, the page is shorter/shifted than its true final layout, so those positions get
+ * computed wrong — and the affected content can end up stuck invisible, because:
+ *   - WOW.js only re-checks visibility on a scroll/resize event, never on its own.
+ *   - GSAP ScrollTrigger's refresh() *should* catch this, but re-triggering an already-fired
+ *     ScrollTrigger's "from" state after the fact isn't reliable in every case.
+ * Trying to patch this up with a refresh/resize *after* running main.js early turned out not
+ * to fix it consistently. The reliable fix is to simply not run main.js until every image
+ * already in the DOM has finished loading, so the very first computation main.js ever does
+ * happens against the final, correct layout — nothing to "fix up" afterward.
  */
 let cleanupTimers = [];
 
@@ -39,34 +54,28 @@ export const useLegacyScripts = (ready = true, deps = []) => {
       window.ScrollTrigger.getAll().forEach((t) => t.kill());
     }
 
-    const timer = setTimeout(() => {
+    let cancelled = false;
+    let injected = false;
+
+    const injectMainScript = () => {
+      if (cancelled || injected) return;
+      injected = true;
+
       const script = document.createElement('script');
       script.src = `/assets/js/main.js?t=${Date.now()}`; // cache-bust so the browser re-fetches/re-executes
       script.setAttribute('data-legacy-init', 'main');
       script.async = false;
 
-      // main.js creates every ScrollTrigger (including the "fade-slide" hero animations)
-      // based on element positions AT THE MOMENT IT RUNS. If images (hero photo, avatar
-      // icon, etc.) haven't finished loading yet, the page is shorter/shifted than its final
-      // layout, so ScrollTrigger can compute the wrong "has this already scrolled past?"
-      // state for above-the-fold content — leaving it stuck at its hidden opacity:0 starting
-      // point forever. This is why the hero sometimes renders fine and sometimes doesn't: it
-      // depends on how fast images happen to load relative to this script running.
-      // Fix: once images are actually loaded, force ScrollTrigger to recompute (refresh)
-      // against the real, final layout so already-visible content gets its visible state.
-      const refreshScrollTrigger = () => {
-        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-      };
+      // Belt-and-suspenders: even though main.js now only runs once images are loaded, still
+      // do a follow-up nudge shortly after in case something else (a web font swapping in and
+      // reflowing text, a very late-arriving image) shifts the layout right after main.js ran.
       script.onload = () => {
-        if (window.jQuery && window.jQuery.fn.imagesLoaded) {
-          window.jQuery(document.body).imagesLoaded(refreshScrollTrigger);
-        } else {
-          // Fallback if the imagesLoaded plugin isn't available for some reason.
-          setTimeout(refreshScrollTrigger, 400);
-        }
-        // Safety-net second refresh in case something (a late-arriving image, a slow
-        // network) still shifted layout after the first refresh ran.
-        setTimeout(refreshScrollTrigger, 1000);
+        const nudge = () => {
+          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+          window.dispatchEvent(new Event('resize'));
+        };
+        setTimeout(nudge, 300);
+        setTimeout(nudge, 1000);
       };
 
       document.body.appendChild(script);
@@ -75,10 +84,29 @@ export const useLegacyScripts = (ready = true, deps = []) => {
         window.AOS.init({ duration: 800, once: true });
         window.AOS.refreshHard();
       }
-    }, 50); // small delay lets React finish committing the new DOM first
+    };
 
-    cleanupTimers.push(timer);
-    return () => clearTimeout(timer);
+    // Give React a moment to finish committing the new DOM (so <img> tags with their real
+    // src attributes actually exist), then wait for every image currently on the page to
+    // finish loading before letting main.js compute any layout-based animation positions.
+    const startTimer = setTimeout(() => {
+      if (window.jQuery && window.jQuery.fn.imagesLoaded) {
+        window.jQuery(document.body).imagesLoaded(injectMainScript);
+        // Don't wait forever if some image never fires a load/error event — run anyway
+        // after a couple of seconds so the page doesn't stay un-animated indefinitely.
+        const forceTimer = setTimeout(injectMainScript, 2500);
+        cleanupTimers.push(forceTimer);
+      } else {
+        // Fallback if the imagesLoaded plugin isn't available for some reason.
+        injectMainScript();
+      }
+    }, 50);
+
+    cleanupTimers.push(startTimer);
+    return () => {
+      cancelled = true;
+      clearTimeout(startTimer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, ...deps]);
 };
