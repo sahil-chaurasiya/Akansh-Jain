@@ -157,11 +157,18 @@ export const SINGLETONS = [
   {
     key: 'about-section', label: 'About Section (Home + About page)', api: '/about-section',
     fields: [
-      { name: 'heading', label: 'Heading', type: 'text' },
-      { name: 'subheading', label: 'Subheading', type: 'text' },
-      { name: 'description', label: 'Description', type: 'textarea' },
+      { name: 'subheading', label: 'Small Badge Label (e.g. "Top choice for cosmetic surgery treatments")', type: 'text' },
+      { name: 'heading', label: 'Main Heading', type: 'text' },
+      { name: 'description', label: 'Intro Description', type: 'textarea' },
       { name: 'images', label: 'Photos', type: 'imageArray' },
-      { name: 'stats', label: 'Stats (JSON array)', type: 'json' },
+      { name: 'badgeText', label: 'Floating Badge Text (short, sits on the photo)', type: 'text' },
+      { name: 'highlights', label: 'Highlight Chips (JSON array: icon + text)', type: 'json' },
+      { name: 'whoWeAreHeading', label: 'Who We Are - Heading', type: 'text' },
+      { name: 'whoWeAreDescription', label: 'Who We Are - Description', type: 'textarea' },
+      { name: 'missionHeading', label: 'Our Mission - Heading', type: 'text' },
+      { name: 'missionDescription', label: 'Our Mission - Description', type: 'textarea' },
+      { name: 'visionHeading', label: 'Our Vision - Heading', type: 'text' },
+      { name: 'visionDescription', label: 'Our Vision - Description', type: 'textarea' },
     ],
   },
   {

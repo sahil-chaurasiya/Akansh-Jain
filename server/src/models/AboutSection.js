@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-const statSchema = new mongoose.Schema(
-  { label: String, value: String, icon: String },
+const highlightItemSchema = new mongoose.Schema(
+  { icon: String, text: String },
   { _id: false }
 );
 
@@ -11,7 +11,14 @@ const aboutSectionSchema = new mongoose.Schema(
     subheading: { type: String, default: '' },
     description: { type: String, default: '' },
     images: [{ url: String, publicId: String }],
-    stats: [statSchema],
+    highlights: [highlightItemSchema],
+    badgeText: { type: String, default: '' },
+    whoWeAreHeading: { type: String, default: '' },
+    whoWeAreDescription: { type: String, default: '' },
+    missionHeading: { type: String, default: '' },
+    missionDescription: { type: String, default: '' },
+    visionHeading: { type: String, default: '' },
+    visionDescription: { type: String, default: '' },
   },
   { timestamps: true }
 );
