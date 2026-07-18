@@ -8,9 +8,6 @@ import Services from './pages/Services.jsx';
 import ServiceDetail from './pages/ServiceDetail.jsx';
 import Projects from './pages/Projects.jsx';
 import ProjectDetail from './pages/ProjectDetail.jsx';
-import Team from './pages/Team.jsx';
-import TeamSingle from './pages/TeamSingle.jsx';
-import Pricing from './pages/Pricing.jsx';
 import Blog from './pages/Blog.jsx';
 import BlogDetails from './pages/BlogDetails.jsx';
 import Faq from './pages/Faq.jsx';
@@ -39,9 +36,6 @@ export default function App() {
       <Route path="/services/:slug" element={<ServiceDetail />} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/projects/:slug" element={<ProjectDetail />} />
-      <Route path="/team" element={<Team />} />
-      <Route path="/team/:slug" element={<TeamSingle />} />
-      <Route path="/pricing" element={<Pricing />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogDetails />} />
       <Route path="/faq" element={<Faq />} />

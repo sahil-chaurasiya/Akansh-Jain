@@ -15,7 +15,7 @@ export default function AdminLayout() {
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
-        <div className="admin-brand">Lustre Admin</div>
+        <div className="admin-brand">Natural Admin</div>
         <nav>
           <NavLink to="/admin" end className="admin-nav-link">Dashboard</NavLink>
           <NavLink to="/admin/submissions" className="admin-nav-link">Form Submissions</NavLink>

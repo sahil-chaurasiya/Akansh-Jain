@@ -27,7 +27,7 @@ export default function BlogDetails() {
 
   return (
     <Layout>
-      <PageMeta pageKey={`post-${slug}`} fallbackTitle={`${post?.title || 'Blog'} - Lustre`} />
+      <PageMeta pageKey={`post-${slug}`} fallbackTitle={`${post?.title || 'Blog'} - Natural Cosmetic Surgery Centre`} />
       <Breadcrumb title={post?.title || 'Blog Details'} />
       {!ready ? (
         <LoadingBlock />

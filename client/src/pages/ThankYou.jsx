@@ -9,7 +9,7 @@ export default function ThankYou() {
 
   return (
     <Layout>
-      <PageMeta pageKey="thank-you" fallbackTitle="Thank You - Lustre" />
+      <PageMeta pageKey="thank-you" fallbackTitle="Thank You - Natural Cosmetic Surgery Centre" />
       <Breadcrumb title="Thank You" />
       <section id="contact" className="contact-area after-none contact-bg pt-60 pb-120 p-relative fix">
         <div className="container text-center">

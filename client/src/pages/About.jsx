@@ -32,7 +32,7 @@ export default function About() {
 
   return (
     <Layout>
-      <PageMeta pageKey="about" fallbackTitle="About Us - Lustre" />
+      <PageMeta pageKey="about" fallbackTitle="About Us - Natural Cosmetic Surgery Centre" />
       <Breadcrumb title="About" />
 
       <section id="about" className="about-area about-p pt-150 pb-150 p-relative fix mv-scope">

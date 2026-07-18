@@ -24,7 +24,7 @@ export default function ProjectDetail() {
 
   return (
     <Layout>
-      <PageMeta pageKey={`project-${slug}`} fallbackTitle={`${project?.title || 'Project'} - Lustre`} />
+      <PageMeta pageKey={`project-${slug}`} fallbackTitle={`${project?.title || 'Project'} - Natural Cosmetic Surgery Centre`} />
       <Breadcrumb title={project?.title || 'Gallery Details'} />
       {!ready ? (
         <LoadingBlock />

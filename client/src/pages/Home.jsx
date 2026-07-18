@@ -47,7 +47,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <PageMeta pageKey="home" fallbackTitle="Lustre - Plastic Surgery HTML Template" />
+      <PageMeta pageKey="home" fallbackTitle="Natural Cosmetic Surgery Centre" />
 
       {/* hero */}
       <section id="home" className="slider-area fix p-relative">

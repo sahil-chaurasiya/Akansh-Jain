@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import api from '../lib/api.js';
 
 // Pulls the admin-editable title/meta description for a given pageKey and applies it to <head>.
-export default function PageMeta({ pageKey, fallbackTitle = 'Lustre - Plastic Surgery' }) {
+export default function PageMeta({ pageKey, fallbackTitle = 'Natural Cosmetic Surgery Centre' }) {
   useEffect(() => {
     let active = true;
     api

@@ -35,7 +35,7 @@ export default function Contact() {
 
   return (
     <Layout>
-      <PageMeta pageKey="contact" fallbackTitle="Contact Us - Lustre" />
+      <PageMeta pageKey="contact" fallbackTitle="Contact Us - Natural Cosmetic Surgery Centre" />
       <Breadcrumb title="Contact Us" />
 
       <section id="contact" className="contact-area3 after-none contact-bg pt-120 p-relative fix">

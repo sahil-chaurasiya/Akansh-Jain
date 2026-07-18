@@ -82,29 +82,6 @@ export const RESOURCES = [
     ],
   },
   {
-    key: 'team-members', label: 'Team Members', api: '/team-members', imageField: 'photo', hasSlug: true,
-    fields: [
-      { name: 'name', label: 'Name', type: 'text', required: true },
-      { name: 'slug', label: 'Slug', type: 'text', required: true },
-      { name: 'role', label: 'Role', type: 'text' },
-      { name: 'bio', label: 'Bio', type: 'textarea' },
-      { name: 'order', label: 'Order', type: 'number' },
-      { name: 'photo', label: 'Photo', type: 'image' },
-    ],
-  },
-  {
-    key: 'pricing-plans', label: 'Pricing Plans', api: '/pricing-plans',
-    fields: [
-      { name: 'name', label: 'Name', type: 'text', required: true },
-      { name: 'price', label: 'Price', type: 'number', required: true },
-      { name: 'billingPeriod', label: 'Billing Period', type: 'text' },
-      { name: 'isPopular', label: 'Most Popular', type: 'boolean' },
-      { name: 'ctaText', label: 'CTA Text', type: 'text' },
-      { name: 'ctaLink', label: 'CTA Link', type: 'text' },
-      { name: 'order', label: 'Order', type: 'number' },
-    ],
-  },
-  {
     key: 'projects', label: 'Projects', api: '/projects', imageField: 'image', hasSlug: true,
     fields: [
       { name: 'title', label: 'Title', type: 'text', required: true },
@@ -149,8 +126,11 @@ export const SINGLETONS = [
       { name: 'copyrightText', label: 'Footer Copyright Text', type: 'textarea' },
       { name: 'logo', label: 'Logo', type: 'image' },
       { name: 'logoAlt', label: 'Footer / Alt Logo', type: 'image' },
-      { name: 'footerColumns', label: 'Footer Columns (JSON array)', type: 'json' },
-      { name: 'socialLinks', label: 'Social Links (JSON array)', type: 'json' },
+      { name: 'footerBgImage', label: 'Footer Background Decoration Image', type: 'image' },
+      { name: 'newsletterHeading', label: 'Footer Newsletter Heading', type: 'text' },
+      { name: 'footerColumns', label: 'Footer Link Columns (JSON array: [{ "heading": "", "links": [{ "label": "", "url": "" }] }])', type: 'json' },
+      { name: 'socialLinks', label: 'Social Links (JSON array: [{ "url": "", "icon": "fab fa-facebook-f" }])', type: 'json' },
+      { name: 'footerLegalLinks', label: 'Footer Legal Links (JSON array: [{ "label": "", "url": "" }])', type: 'json' },
       { name: 'tickerItems', label: 'Ticker Items (JSON array)', type: 'json' },
     ],
   },

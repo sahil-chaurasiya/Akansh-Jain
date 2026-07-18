@@ -24,7 +24,7 @@ export default function Projects() {
 
   return (
     <Layout>
-      <PageMeta pageKey="projects" fallbackTitle="Gallery - Lustre" />
+      <PageMeta pageKey="projects" fallbackTitle="Gallery - Natural Cosmetic Surgery Centre" />
       <Breadcrumb title="Gallery" />
 
       <section className="gallery-area pt-150 pb-120 fix">

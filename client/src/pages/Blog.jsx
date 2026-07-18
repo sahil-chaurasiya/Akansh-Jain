@@ -25,7 +25,7 @@ export default function Blog() {
 
   return (
     <Layout>
-      <PageMeta pageKey="blog" fallbackTitle="Blog - Lustre" />
+      <PageMeta pageKey="blog" fallbackTitle="Blog - Natural Cosmetic Surgery Centre" />
       <Breadcrumb title="Blog" />
 
       <section className="inner-blog pt-120 pb-105">

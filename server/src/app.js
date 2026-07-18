@@ -21,8 +21,6 @@ import testimonialRoutes from './routes/testimonialRoutes.js';
 import galleryItemRoutes from './routes/galleryItemRoutes.js';
 import brandLogoRoutes from './routes/brandLogoRoutes.js';
 import postRoutes from './routes/postRoutes.js';
-import teamMemberRoutes from './routes/teamMemberRoutes.js';
-import pricingPlanRoutes from './routes/pricingPlanRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
 import faqItemRoutes from './routes/faqItemRoutes.js';
 import contactInfoRoutes from './routes/contactInfoRoutes.js';
@@ -58,7 +56,7 @@ if (process.env.NODE_ENV !== 'test') {
 // );
 
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'Lustre API is running', time: new Date().toISOString() });
+  res.json({ success: true, message: 'Natural Cosmetic Surgery Centre API is running', time: new Date().toISOString() });
 });
 
 // --- Routes ---
@@ -75,8 +73,6 @@ app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/gallery-items', galleryItemRoutes);
 app.use('/api/brand-logos', brandLogoRoutes);
 app.use('/api/posts', postRoutes);
-app.use('/api/team-members', teamMemberRoutes);
-app.use('/api/pricing-plans', pricingPlanRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/faq-items', faqItemRoutes);
 app.use('/api/contact-info', contactInfoRoutes);
@@ -91,7 +87,7 @@ const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`Lustre API listening on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);
+    console.log(`Natural Cosmetic Surgery Centre API listening on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);
   });
 });
 

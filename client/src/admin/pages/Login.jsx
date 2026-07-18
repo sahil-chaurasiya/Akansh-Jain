@@ -29,7 +29,7 @@ export default function Login() {
   return (
     <div className="admin-login-shell">
       <div className="admin-login-box">
-        <h2 style={{ marginBottom: 20 }}>Lustre Admin</h2>
+        <h2 style={{ marginBottom: 20 }}>Natural Admin</h2>
         {error && <div className="admin-alert admin-alert-error">{error}</div>}
         <form onSubmit={submit}>
           <div className="admin-form-group">

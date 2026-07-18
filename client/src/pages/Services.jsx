@@ -24,7 +24,7 @@ export default function Services() {
 
   return (
     <Layout>
-      <PageMeta pageKey="services" fallbackTitle="Services - Lustre" />
+      <PageMeta pageKey="services" fallbackTitle="Services - Natural Cosmetic Surgery Centre" />
       <Breadcrumb title="Services" />
 
       <section className="services-area p-relative fix pt-150 pb-120">

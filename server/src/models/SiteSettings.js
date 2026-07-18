@@ -12,6 +12,7 @@ const footerColumnSchema = new mongoose.Schema(
   },
   { _id: false }
 );
+const legalLinkSchema = new mongoose.Schema({ label: String, url: String }, { _id: false });
 
 const siteSettingsSchema = new mongoose.Schema(
   {
@@ -22,8 +23,11 @@ const siteSettingsSchema = new mongoose.Schema(
     topContactAddress: { type: String, default: '' },
     headerCtaText: { type: String, default: '' },
     headerCtaLink: { type: String, default: '' },
+    footerBgImage: { url: String, publicId: String },
+    newsletterHeading: { type: String, default: 'Subscribe our Newsletter' },
     footerColumns: [footerColumnSchema],
     socialLinks: [socialLinkSchema],
+    footerLegalLinks: [legalLinkSchema],
     copyrightText: { type: String, default: '' },
     tickerItems: [{ text: String, order: Number }],
   },

@@ -39,7 +39,7 @@ export default function ServiceDetail() {
 
   return (
     <Layout>
-      <PageMeta pageKey={`service-${slug}`} fallbackTitle={`${service?.title || 'Service'} - Lustre`} />
+      <PageMeta pageKey={`service-${slug}`} fallbackTitle={`${service?.title || 'Service'} - Natural Cosmetic Surgery Centre`} />
       <Breadcrumb title={service?.title || 'Service Details'} />
       {!ready ? (
         <LoadingBlock />

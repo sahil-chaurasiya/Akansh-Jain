@@ -7,8 +7,6 @@ const FALLBACK_NAV = [
   { _id: 'about', label: 'About Us', link: '/about' },
   { _id: 'services', label: 'Services', link: '/services' },
   { _id: 'projects', label: 'Gallery', link: '/projects' },
-  { _id: 'pricing', label: 'Pricing', link: '/pricing' },
-  { _id: 'team', label: 'Team', link: '/team' },
   { _id: 'faq', label: 'Faq', link: '/faq' },
   { _id: 'blog', label: 'Blog', link: '/blog' },
   { _id: 'contact', label: 'Contact Us', link: '/contact' },
@@ -42,7 +40,7 @@ export default function Header() {
               <div className="col-xl-2 col-lg-2 col-md-5">
                 <div className="logo">
                   <Link to="/">
-                    <img src={logoUrl} alt="logo" />
+                    <img src={logoUrl} alt="Natural Cosmetic Surgery Centre" />
                   </Link>
                 </div>
               </div>

@@ -18,7 +18,7 @@ export default function Dashboard() {
       </div>
       <div className="admin-card">
         <h3>Collections</h3>
-        <p style={{ color: '#777', fontSize: 14 }}>Lists of repeatable content (services, posts, team, etc.)</p>
+        <p style={{ color: '#777', fontSize: 14 }}>Lists of repeatable content (services, posts, projects, etc.)</p>
         <ul>
           {RESOURCES.map((r) => (
             <li key={r.key}>
