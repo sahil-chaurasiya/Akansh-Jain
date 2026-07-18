@@ -9,7 +9,7 @@ export default function Home() {
   const [data, setData] = useState({
     slides: [], homeAbout: null, services: [], whoWeAre: null,
     howItWork: [], bookingSection: null, testimonials: [],
-    gallery: [], posts: [], settings: null,
+    gallery: [], posts: [], settings: null, gallerySection: null,
   });
   const [ready, setReady] = useState(false);
 
@@ -24,8 +24,9 @@ export default function Home() {
       api.get('/testimonials'),
       api.get('/gallery-items?limit=6'),
       api.get('/posts?limit=3'),
+      api.get('/gallery-section'),
     ])
-      .then(([slides, homeAbout, services, who, how, booking, testi, gallery, posts]) => {
+      .then(([slides, homeAbout, services, who, how, booking, testi, gallery, posts, gallerySection]) => {
         setData({
           slides: slides.data.data,
           homeAbout: homeAbout.data.data,
@@ -36,6 +37,7 @@ export default function Home() {
           testimonials: testi.data.data,
           gallery: gallery.data.data,
           posts: posts.data.data,
+          gallerySection: gallerySection.data.data,
         });
       })
       .finally(() => setReady(true));
@@ -469,6 +471,26 @@ export default function Home() {
       {/* gallery */}
       <section className="gallery-area pb-120 fix">
         <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-6 col-md-12">
+              <div className="section-title section-title-2 center-align p-relative">
+                <h5>
+                  <span className="line">
+                    <img src="/assets/img/bg/h-icon.png" alt="img" />
+                  </span>{' '}
+                  {data.gallerySection?.eyebrow || 'Gallery'}
+                </h5>
+                <h2 className="text-anime-style-3">{data.gallerySection?.heading || 'Sculpting Dreams Into Stunning Reality'}</h2>
+              </div>
+            </div>
+            <div className="col-lg-6 col-md-6 p-relative text-right d-none d-lg-block">
+              <Link to={data.gallerySection?.buttonLink || '/projects'} className="btn btn2">
+                {data.gallerySection?.buttonText || 'View All Gallery'} <i className="fa-light fa-arrow-right-long"></i>
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="container">
           <div className="row">
             {(data.gallery?.length ? data.gallery : []).map((g) => (
               <div className="col-lg-4 col-md-6" key={g._id}>
@@ -480,6 +502,30 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* services ticker / scrollbox */}
+      <div className="section-ticker-area fix pt-150 pb-180">
+        <div className="section-ticker">
+          <div className="ticker">
+            <div className="ticker__run">
+              <div><span><img src="/assets/img/bg/scrollbox-icon-2.png" alt="img" /> Facelift Surgery</span></div>
+              <div><span><img src="/assets/img/bg/scrollbox-icon-2.png" alt="img" /> Breast Augmentation</span></div>
+              <div><span><img src="/assets/img/bg/scrollbox-icon-2.png" alt="img" /> Lip Enhancement</span></div>
+              <div><span><img src="/assets/img/bg/scrollbox-icon-2.png" alt="img" /> Jawline Contouring</span></div>
+            </div>
+          </div>
+        </div>
+        <div className="section-ticker section-ticker-arbic">
+          <div className="ticker arabic">
+            <div className="ticker__run">
+              <div><span><img src="/assets/img/bg/scrollbox-icon.png" alt="img" /> Facelift Surgery</span></div>
+              <div><span><img src="/assets/img/bg/scrollbox-icon.png" alt="img" /> Breast Augmentation</span></div>
+              <div><span><img src="/assets/img/bg/scrollbox-icon.png" alt="img" /> Lip Enhancement</span></div>
+              <div><span><img src="/assets/img/bg/scrollbox-icon.png" alt="img" /> Jawline Contouring</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* blog teaser */}
       <section id="blog" className="blog-area p-relative fix pb-120">

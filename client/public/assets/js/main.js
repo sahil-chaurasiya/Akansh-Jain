@@ -973,7 +973,7 @@
 
     //ticker
 
-    document.addEventListener('DOMContentLoaded', () => {
+    const initTicker = () => {
         const durationOffset = window.innerWidth < 768 ? 50 : 100;
 
         document.querySelectorAll('.ticker').forEach(ticker => {
@@ -1022,7 +1022,18 @@
                 }
             });
         });
-    });
+    };
+
+    // `DOMContentLoaded` only ever fires once per document. In an SPA, this script
+    // gets re-injected on every route change (long after that event already fired),
+    // so a plain `addEventListener('DOMContentLoaded', ...)` would silently never run
+    // again. Run immediately whenever the DOM is already parsed; only fall back to
+    // waiting for the event on the very first, real page load.
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTicker);
+    } else {
+        initTicker();
+    }
 
 
 })(jQuery);

@@ -178,6 +178,15 @@ export const SINGLETONS = [
     ],
   },
   {
+    key: 'gallery-section', label: 'Home Page - Gallery Heading (/ only)', api: '/gallery-section',
+    fields: [
+      { name: 'eyebrow', label: 'Small Eyebrow Label (e.g. "Gallery")', type: 'text' },
+      { name: 'heading', label: 'Main Heading', type: 'text' },
+      { name: 'buttonText', label: '"View All Gallery" Button Text', type: 'text' },
+      { name: 'buttonLink', label: '"View All Gallery" Button Link', type: 'text' },
+    ],
+  },
+  {
     key: 'home-about-section', label: 'Home Page - About Box (/ only)', api: '/home-about-section',
     fields: [
       { name: 'subheading', label: 'Small Eyebrow Label (e.g. "About Us")', type: 'text' },
