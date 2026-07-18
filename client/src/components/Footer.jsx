@@ -55,9 +55,9 @@ export default function Footer() {
   const socialLinks = settings?.socialLinks?.length ? settings.socialLinks : DEFAULT_SOCIAL_LINKS;
   const legalLinks = settings?.footerLegalLinks?.length ? settings.footerLegalLinks : DEFAULT_LEGAL_LINKS;
   const newsletterHeading = settings?.newsletterHeading || 'Subscribe our Newsletter';
-  const contactEmail = settings?.topContactEmail || 'nathan.roberts@example.com';
-  const phone = settings?.topContactPhone || '(603) 555-0123';
-  const address = settings?.topContactAddress || '6391 Elgin St. Celina, Delaware';
+  const contactEmail = settings?.topContactEmail || 'drakanshjain@gmail.com';
+  const phone = settings?.topContactPhone || '9278479456';
+  const address = settings?.topContactAddress || 'Dr. Aakansh Jain, Naja Hospital, Shivaji Nagar, Kanpur Road, Jhansi, Uttar Pradesh 284128';
   const copyright = settings?.copyrightText || 'Copyright & Design By @Zcubethemes - 2025. All Rights Reserved';
 
   const subscribe = async (e) => {

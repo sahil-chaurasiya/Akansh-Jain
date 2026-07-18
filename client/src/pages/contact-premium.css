@@ -1,0 +1,444 @@
+/* Contact page — redesigned as an "appointment slip": info stub + tear line + form,
+   with the map living in its own card below. Everything lives in normal document
+   flow (no absolute/negative-margin positioning), and the section carries generous
+   bottom padding, so nothing can ever ride up into the footer regardless of iframe
+   height, viewport width, or content length.
+   Palette matches the rest of the site: #D96B3D accent, #0A1119 ink, #FDF8F5 cream.
+   Scoped entirely under .cp-contact so it can't leak into other pages. */
+
+.cp-contact {
+  --cp-bg: #FDF8F5;
+  --cp-card: #ffffff;
+  --cp-ink: #0A1119;
+  --cp-muted: #6b6f76;
+  --cp-accent: #D96B3D;
+  --cp-accent-soft: rgba(217, 107, 61, 0.1);
+  --cp-line: rgba(10, 17, 25, 0.1);
+
+  background: var(--cp-bg);
+  padding: 120px 0 160px;
+}
+
+.cp-contact * {
+  box-sizing: border-box;
+}
+
+.cp-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Header ---------- */
+
+.cp-head {
+  max-width: 640px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+
+.cp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Sora", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cp-accent);
+  margin-bottom: 18px;
+}
+
+.cp-eyebrow::before,
+.cp-eyebrow::after {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--cp-accent);
+  opacity: 0.5;
+}
+
+.cp-head h2 {
+  font-family: "Marcellus", serif;
+  font-size: 42px;
+  color: var(--cp-ink);
+  margin: 0 0 16px;
+}
+
+.cp-head p {
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--cp-muted);
+  margin: 0;
+}
+
+/* ---------- Quick-contact pills ---------- */
+
+.cp-quick {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 60px;
+}
+
+.cp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--cp-line);
+  background: var(--cp-card);
+  font-family: "Sora", sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--cp-ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.cp-pill i {
+  color: var(--cp-accent);
+  font-size: 15px;
+  transition: color 0.2s ease;
+}
+
+.cp-pill:hover {
+  border-color: var(--cp-accent);
+  background: var(--cp-ink);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.cp-pill:hover i {
+  color: var(--cp-accent);
+}
+
+/* ---------- Appointment slip ---------- */
+
+.cp-slip {
+  display: grid;
+  grid-template-columns: 0.85fr 2px 1.15fr;
+  background: var(--cp-card);
+  border-radius: 24px;
+  box-shadow: 0 30px 70px rgba(10, 17, 25, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.cp-slip-info {
+  padding: 56px 46px;
+  position: relative;
+}
+
+.cp-slip-info::before {
+  content: '';
+  position: absolute;
+  inset: 18px 0 18px auto;
+  right: 0;
+  width: 1px;
+}
+
+.cp-kicker {
+  font-family: "Sora", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cp-accent);
+  margin-bottom: 8px;
+}
+
+.cp-slip-info h3 {
+  font-family: "Marcellus", serif;
+  font-size: 26px;
+  color: var(--cp-ink);
+  margin: 0 0 32px;
+}
+
+.cp-info-row {
+  display: flex;
+  gap: 18px;
+  padding: 20px 0;
+  border-top: 1px solid var(--cp-line);
+}
+
+.cp-info-row:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.cp-info-icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--cp-accent-soft);
+  color: var(--cp-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.cp-info-text h4 {
+  font-family: "Sora", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cp-muted);
+  margin: 0 0 6px;
+}
+
+.cp-info-text p,
+.cp-info-text a {
+  font-family: "Sora", sans-serif;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--cp-ink);
+  margin: 0;
+  text-decoration: none;
+}
+
+.cp-info-text a:hover {
+  color: var(--cp-accent);
+}
+
+/* Tear line between the two halves — perforation notches cut into the card at
+   top and bottom using the section's own background color. */
+
+.cp-tear {
+  position: relative;
+  width: 0;
+  border-left: 2px dashed var(--cp-line);
+}
+
+.cp-tear::before,
+.cp-tear::after {
+  content: '';
+  position: absolute;
+  left: -11px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cp-bg);
+}
+
+.cp-tear::before {
+  top: -11px;
+}
+
+.cp-tear::after {
+  bottom: -11px;
+}
+
+.cp-slip-form {
+  padding: 56px 50px;
+}
+
+.cp-slip-form h3 {
+  font-family: "Marcellus", serif;
+  font-size: 26px;
+  color: var(--cp-ink);
+  margin: 0 0 8px;
+}
+
+.cp-slip-form > p {
+  font-family: "Sora", sans-serif;
+  font-size: 15px;
+  color: var(--cp-muted);
+  margin: 0 0 28px;
+}
+
+.cp-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cp-form-grid .cp-field-full {
+  grid-column: 1 / -1;
+}
+
+.cp-field label {
+  display: block;
+  font-family: "Sora", sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cp-muted);
+  margin-bottom: 8px;
+}
+
+.cp-field input,
+.cp-field textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--cp-line);
+  background: #fbfaf8;
+  font-family: "Sora", sans-serif;
+  font-size: 15px;
+  color: var(--cp-ink);
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  resize: vertical;
+}
+
+.cp-field input:focus,
+.cp-field textarea:focus {
+  border-color: var(--cp-accent);
+  background: #ffffff;
+}
+
+.cp-field input::placeholder,
+.cp-field textarea::placeholder {
+  color: #a8a9ac;
+}
+
+.cp-submit-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.cp-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 28px;
+  border-radius: 999px;
+  border: none;
+  background: var(--cp-ink);
+  color: #fff;
+  font-family: "Sora", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cp-submit:hover {
+  background: var(--cp-accent);
+  transform: translateY(-1px);
+}
+
+.cp-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cp-submit-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--cp-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex: none;
+}
+
+.cp-submit:hover .cp-submit-icon {
+  background: var(--cp-ink);
+}
+
+.cp-status {
+  font-family: "Sora", sans-serif;
+  font-size: 14px;
+  color: #c0392b;
+  margin: 0;
+}
+
+/* ---------- Map card ---------- */
+
+.cp-map-card {
+  margin-top: 44px;
+  background: var(--cp-card);
+  border-radius: 24px;
+  box-shadow: 0 30px 70px rgba(10, 17, 25, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.cp-map-tag {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--cp-ink);
+  color: #fff;
+  font-family: "Sora", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(10, 17, 25, 0.25);
+}
+
+.cp-map-tag i {
+  color: var(--cp-accent);
+}
+
+.cp-map-card iframe {
+  display: block;
+  width: 100%;
+  height: 380px;
+  border: 0;
+}
+
+.cp-map-empty {
+  padding: 60px 40px;
+  text-align: center;
+  font-family: "Sora", sans-serif;
+  color: var(--cp-muted);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 991px) {
+  .cp-slip {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-tear {
+    display: none;
+  }
+
+  .cp-slip-info {
+    border-bottom: 1px dashed var(--cp-line);
+  }
+
+  .cp-slip-info,
+  .cp-slip-form {
+    padding: 44px 32px;
+  }
+}
+
+@media (max-width: 575px) {
+  .cp-contact {
+    padding: 90px 0 120px;
+  }
+
+  .cp-head h2 {
+    font-size: 32px;
+  }
+
+  .cp-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-map-card iframe {
+    height: 280px;
+  }
+}

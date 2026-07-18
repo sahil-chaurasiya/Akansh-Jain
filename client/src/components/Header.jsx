@@ -27,7 +27,7 @@ export default function Header() {
   }, []);
 
   const logoUrl = settings?.logo?.url || '/assets/img/logo/logo.png';
-  const phone = settings?.topContactPhone || '(406) 555-0120';
+  const phone = settings?.topContactPhone || '9278479456';
   const ctaText = settings?.headerCtaText || 'Get Appointment';
   const ctaLink = settings?.headerCtaLink || '/contact';
 
