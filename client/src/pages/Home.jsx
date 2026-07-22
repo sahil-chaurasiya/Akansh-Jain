@@ -67,7 +67,7 @@ export default function Home() {
                 <div className="col-lg-6 col-md-12">
                   <div className="slider-content s-slider-content">
                     <h5 className="fade-slide bottom">
-                      <img src="/assets/img/bg/h-icon.png" alt="img" /> Best In Town
+                      <img src="/assets/img/bg/h-icon.png" alt="img" /> {slide?.eyebrowText || 'Best In Town'}
                     </h5>
                     <h2 className="text-anime-style-3">{slide?.headline || 'Transforming Look Changing Lives'}</h2>
                     <p className="fade-slide top">
@@ -85,8 +85,8 @@ export default function Home() {
                           <img src={slide?.clientAvatarsImage?.url || '/assets/img/slider/h-client-img.png'} alt="img" />
                         </div>
                         <div className="text">
-                          <p>2,000+</p>
-                          <p>Happy Clients</p>
+                          <p>{slide?.happyClientsCount || '2,000+'}</p>
+                          <p>{slide?.happyClientsLabel || 'Happy Clients'}</p>
                         </div>
                       </div>
                     </div>
@@ -94,20 +94,20 @@ export default function Home() {
                       <ul>
                         <li>
                           <div className="counter-outer-box">
-                            <h3>50k+</h3>
-                            <p>Clients Review</p>
+                            <h3>{slide?.counter1Value || '50k+'}</h3>
+                            <p>{slide?.counter1Label || 'Clients Review'}</p>
                           </div>
                         </li>
                         <li>
                           <div className="counter-outer-box">
-                            <h3>100+</h3>
-                            <p>Expert Surgeon</p>
+                            <h3>{slide?.counter2Value || '100+'}</h3>
+                            <p>{slide?.counter2Label || 'Expert Surgeon'}</p>
                           </div>
                         </li>
                         <li>
                           <div className="counter-outer-box">
-                            <h3>20+</h3>
-                            <p>Award Winner</p>
+                            <h3>{slide?.counter3Value || '20+'}</h3>
+                            <p>{slide?.counter3Label || 'Award Winner'}</p>
                           </div>
                         </li>
                       </ul>
@@ -117,7 +117,7 @@ export default function Home() {
                 <div className="col-lg-6">
                   <div className="image-layer fade-slide right">
                     <div className="play-box fade-slide top">
-                      <a href="https://www.youtube.com/watch?v=gyGsPlt06bo" className="popup-video" tabIndex="0">
+                      <a href={slide?.videoUrl || 'https://www.youtube.com/watch?v=gyGsPlt06bo'} className="popup-video" tabIndex="0">
                         <img src="/assets/img/slider/slider-play.png" alt="shape" />
                       </a>
                     </div>
