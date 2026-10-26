@@ -22,11 +22,14 @@ export default function ResourceForm() {
   const [values, setValues] = useState(() => {
     const initial = {};
     config.fields.forEach((f) => {
-      if (f.type !== 'image' && f.type !== 'imageArray') initial[f.name] = emptyValueFor(f);
+      if (f.type !== 'image' && f.type !== 'imageArray' && f.type !== 'video') initial[f.name] = emptyValueFor(f);
     });
     return initial;
   });
   const [imageFiles, setImageFiles] = useState({});
+  // video fields (e.g. About reels): the file picked now + the already-saved video's URL.
+  const [videoFiles, setVideoFiles] = useState({});
+  const [existingVideos, setExistingVideos] = useState({});
   const [existingImages, setExistingImages] = useState({});
   // imageArray fields (e.g. Service.gallery): existing = already-saved {url,publicId} list,
   // newFiles = freshly-picked File objects waiting to be uploaded on save.
@@ -42,7 +45,7 @@ export default function ResourceForm() {
       const data = res.data.data;
       const next = {};
       config.fields.forEach((f) => {
-        if (f.type === 'image' || f.type === 'imageArray') return;
+        if (f.type === 'image' || f.type === 'imageArray' || f.type === 'video') return;
         if (f.type === 'tags') next[f.name] = (data[f.name] || []).join(', ');
         else next[f.name] = data[f.name] ?? emptyValueFor(f);
       });
@@ -52,6 +55,11 @@ export default function ResourceForm() {
         if (f.type === 'image' && data[f.name]?.url) imgs[f.name] = data[f.name].url;
       });
       setExistingImages(imgs);
+      const vids = {};
+      config.fields.forEach((f) => {
+        if (f.type === 'video' && data[f.name]?.url) vids[f.name] = data[f.name].url;
+      });
+      setExistingVideos(vids);
       const imgArrays = {};
       config.fields.forEach((f) => {
         if (f.type === 'imageArray') imgArrays[f.name] = data[f.name] || [];
@@ -71,7 +79,7 @@ export default function ResourceForm() {
     try {
       const fd = new FormData();
       config.fields.forEach((f) => {
-        if (f.type === 'image' || f.type === 'imageArray') return;
+        if (f.type === 'image' || f.type === 'imageArray' || f.type === 'video') return;
         if (f.type === 'tags') {
           values[f.name]
             .split(',')
@@ -90,6 +98,10 @@ export default function ResourceForm() {
         // resource with more than one photo) are sent under their real field name and
         // require the route to use upload.fields([...]) instead — see slideRoutes.js.
         fd.append(fieldName === config.imageField ? 'image' : fieldName, file);
+      });
+
+      Object.entries(videoFiles).forEach(([fieldName, file]) => {
+        if (file) fd.append(fieldName, file);
       });
 
       // imageArray fields (e.g. gallery): upload any newly-picked files one at a time via
@@ -141,6 +153,31 @@ export default function ResourceForm() {
                   <img src={existingImages[f.name]} alt="" style={{ width: 100, display: 'block', marginBottom: 8, borderRadius: 4 }} />
                 )}
                 <input type="file" accept="image/*" onChange={(e) => setImageFiles((p) => ({ ...p, [f.name]: e.target.files[0] }))} />
+              </div>
+            );
+          }
+          if (f.type === 'video') {
+            return (
+              <div className="admin-form-group" key={f.name}>
+                <label>{f.label}</label>
+                {existingVideos[f.name] && !videoFiles[f.name] && (
+                  <video
+                    src={existingVideos[f.name]}
+                    controls
+                    muted
+                    preload="metadata"
+                    style={{ width: 120, display: 'block', marginBottom: 8, borderRadius: 6 }}
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="video/mp4,video/quicktime,video/webm,video/x-matroska"
+                  required={isNew && f.required !== false}
+                  onChange={(e) => setVideoFiles((p) => ({ ...p, [f.name]: e.target.files[0] }))}
+                />
+                <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
+                  {isNew ? 'Required.' : 'Leave empty to keep the current video.'} Uploading a large video can take a minute — wait for "Save" to finish.
+                </p>
               </div>
             );
           }

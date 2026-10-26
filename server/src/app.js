@@ -30,6 +30,7 @@ import contactInfoRoutes from './routes/contactInfoRoutes.js';
 import pageMetaRoutes from './routes/pageMetaRoutes.js';
 import submissionRoutes from './routes/submissionRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import aboutReelRoutes from './routes/aboutReelRoutes.js';
 
 const app = express();
 
@@ -85,6 +86,7 @@ app.use('/api/contact-info', contactInfoRoutes);
 app.use('/api/page-meta', pageMetaRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/about-reels', aboutReelRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

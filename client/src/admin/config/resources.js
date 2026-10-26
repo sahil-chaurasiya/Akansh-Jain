@@ -114,6 +114,15 @@ export const RESOURCES = [
     ],
   },
   {
+    key: 'about-reels', label: 'About Page - Reels', api: '/about-reels',
+    fields: [
+      { name: 'caption', label: 'Caption (optional — small text under the reel)', type: 'text' },
+      { name: 'linkUrl', label: 'Click-through Link (optional — e.g. the Instagram reel URL. Leave empty and the reel plays in a popup on the site)', type: 'text' },
+      { name: 'order', label: 'Order (smaller number shows first)', type: 'number' },
+      { name: 'video', label: 'Reel Video (vertical 9:16 works best — MP4 / MOV / WEBM, max 100 MB)', type: 'video' },
+    ],
+  },
+  {
     key: 'nav-items', label: 'Nav Menu', api: '/nav-items',
     fields: [
       { name: 'label', label: 'Label', type: 'text', required: true },
@@ -148,7 +157,7 @@ export const SINGLETONS = [
     ],
   },
   {
-    key: 'about-section', label: 'About Page - Content (/about only)', api: '/about-section',
+    key: 'about-section', label: 'About Page - Content (/about only; add reels under Collections → About Page - Reels)', api: '/about-section',
     fields: [
       { name: 'bioLabel', label: 'Small Label above the heading (e.g. "About Us")', type: 'text' },
       { name: 'bioHeading', label: 'Doctor Heading (e.g. "Meet Dr. Aakansh Jain")', type: 'text' },
@@ -158,34 +167,11 @@ export const SINGLETONS = [
       { name: 'images', label: 'Photos', type: 'imageArray' },
       { name: 'badgeText', label: 'Floating Badge Text (short, sits on the photo)', type: 'text' },
       { name: 'highlights', label: 'Highlight Chips (JSON array: icon + text)', type: 'json' },
-      { name: 'whoWeAreHeading', label: 'Who We Are - Heading', type: 'text' },
-      { name: 'whoWeAreDescription', label: 'Who We Are - Description', type: 'textarea' },
-      { name: 'testimonialsHeading', label: 'Testimonials Block - Heading', type: 'text' },
-      { name: 'testimonialsSubheading', label: 'Testimonials Block - Subheading', type: 'text' },
-      { name: 'reviewPlatforms', label: 'Review Platform Badges (JSON array: [{ "name": "Google", "countText": "300+ Reviews", "icon": "fa-brands fa-google", "link": "#" }])', type: 'json' },
-
-      { name: 'academicProfileHeading', label: 'Academic Profile - Heading', type: 'text' },
-      { name: 'academicProfileText', label: 'Academic Profile - Text', type: 'textarea' },
-
-      { name: 'expertiseHeading', label: 'Expertise Section - Heading', type: 'text' },
-      { name: 'expertiseSubtext', label: 'Expertise Section - Subtext', type: 'text' },
-      {
-        name: 'expertiseStats',
-        label: 'Expertise Stats (one per line, format: Number | Label — e.g. 7,000+ | Gynecomastia)',
-        type: 'statLines',
-      },
-
-      { name: 'achievementsHeading', label: 'Achievements & Fellowship - Heading', type: 'text' },
-      { name: 'achievementsItems', label: 'Achievements & Fellowship - Items (one per line)', type: 'lines' },
-
-      { name: 'publicationsHeading', label: 'Publications & Presentation - Heading', type: 'text' },
-      { name: 'publicationsItems', label: 'Publications - Items (one per line)', type: 'lines' },
-
-      { name: 'awardsHeading', label: 'Awards - Heading', type: 'text' },
-      { name: 'awardsItems', label: 'Awards - Items (one per line)', type: 'lines' },
-
-      { name: 'presentationHeading', label: 'Presentation - Heading', type: 'text' },
-      { name: 'presentationItems', label: 'Presentation - Items (one per line)', type: 'lines' },
+      { name: 'featuredVideoHeading', label: 'Video Section - Heading (e.g. "Watch & Listen")', type: 'text' },
+      { name: 'featuredVideoSubheading', label: 'Video Section - Small line under the heading (optional)', type: 'text' },
+      { name: 'featuredVideoUrls', label: 'Video / Podcast Links - paste YouTube or Vimeo links, one per line (a single link shows one big video; several show side by side). Leave empty to hide the section', type: 'lines' },
+      { name: 'reelsHeading', label: 'Reels Section - Heading (e.g. "Our Reels")', type: 'text' },
+      { name: 'reelsSubheading', label: 'Reels Section - Small line under the heading', type: 'text' },
     ],
   },
   {

@@ -1,0 +1,158 @@
+/* About page — featured video / podcast block + reels strip.
+   Every class is prefixed "am-" so nothing leaks into other pages.
+   Palette matches the site: #70028F (accent), #321537 (dark), #F2DDF3 (cream). */
+
+.am-section {
+  position: relative;
+  padding: 90px 0;
+}
+.am-video-section { background: #F2DDF3; }
+.am-reels-section { background: #fff; padding-bottom: 100px; overflow: hidden; }
+
+.am-header { text-align: center; margin-bottom: 44px; }
+.am-header h2 {
+  font-size: 40px;
+  line-height: 1.25;
+  color: #321537;
+  margin: 0 0 10px;
+}
+.am-header p { color: #6b5a70; margin: 0; font-size: 16px; }
+
+/* ---- Featured video(s) ---- */
+.am-video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+}
+.am-video-grid.am-video-single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 960px;
+  margin: 0 auto;
+}
+.am-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 18px 50px rgba(50, 21, 55, 0.22);
+}
+.am-video-frame iframe,
+.am-video-frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ---- Reels strip (9:16 tiles) ---- */
+.am-reels-wrap { width: 100%; overflow: hidden; padding: 6px 0 14px; }
+.am-reels-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  min-width: 100%;
+  padding: 0 20px;
+  justify-content: center;
+}
+.am-reels-track.am-reels-marquee {
+  justify-content: flex-start;
+  animation: am-marquee 45s linear infinite;
+}
+.am-reels-track.am-reels-marquee:hover { animation-play-state: paused; }
+@keyframes am-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.am-reel {
+  flex: 0 0 auto;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font: inherit;
+}
+.am-reel video {
+  display: block;
+  width: 220px;
+  height: 391px; /* true 9:16 */
+  object-fit: cover;
+  background: #321537;
+  border: 3px solid #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 22px rgba(50, 21, 55, 0.2);
+  pointer-events: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.am-reel:hover video {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(112, 2, 143, 0.28);
+}
+.am-reel-caption {
+  max-width: 220px;
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #6b5a70;
+}
+
+/* ---- Popup player (reels without a click-through link) ---- */
+.am-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(20, 8, 24, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.am-modal-body { position: relative; max-width: 380px; width: 100%; text-align: center; }
+.am-modal-body video {
+  display: block;
+  width: 100%;
+  max-height: 80vh;
+  border-radius: 14px;
+  background: #000;
+}
+.am-modal-body p { color: #fff; margin: 12px 0 0; font-size: 14px; }
+.am-modal-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: #321537;
+  font-size: 22px;
+  line-height: 34px;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (max-width: 991px) {
+  .am-section { padding: 70px 0; }
+  .am-header h2 { font-size: 32px; }
+}
+@media (max-width: 575px) {
+  .am-section { padding: 56px 0; }
+  .am-header { margin-bottom: 28px; }
+  .am-header h2 { font-size: 26px; }
+  .am-video-grid { grid-template-columns: minmax(0, 1fr); }
+  .am-video-frame { border-radius: 12px; }
+  .am-reels-track { gap: 10px; padding: 0 12px; }
+  .am-reel video { width: 140px; height: 249px; border-radius: 12px; }
+  .am-reel-caption { max-width: 140px; font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .am-reels-track.am-reels-marquee { animation: none; justify-content: flex-start; overflow-x: auto; }
+}

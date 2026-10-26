@@ -64,6 +64,14 @@ Later he went to learn more in aesthetic surgery he went to Dr. Roy Kanjoor’s 
       ],
     },
 
+    // ---- /about page: featured video(s) + reels strip (managed from the admin panel).
+    // featuredVideoUrls: YouTube / Vimeo links (or a direct .mp4 link), one per item.
+    featuredVideoHeading: { type: String, default: 'Watch & Listen' },
+    featuredVideoSubheading: { type: String, default: '' },
+    featuredVideoUrls: { type: [String], default: () => [] },
+    reelsHeading: { type: String, default: 'Our Reels' },
+    reelsSubheading: { type: String, default: 'Watch our latest reels' },
+
     // ---- Profile / Credentials sections (Academic Profile, Expertise, Achievements,
     // Publications, Awards, Presentations). Every list below is a plain array of strings
     // (or simple {number,label} pairs) so the admin panel can edit them as "one per line"
