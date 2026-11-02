@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../../lib/api.js';
-import { getResourceConfig } from '../config/resources.js';
+import { getResourceConfig, getNiceInfo } from '../config/resources.js';
 
 const emptyValueFor = (field) => {
   if (field.type === 'boolean') return false;
@@ -139,7 +139,7 @@ export default function ResourceForm() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h2>{isNew ? `Add ${config.label}` : `Edit ${config.label}`}</h2>
+        <h2>{isNew ? `Add: ${getNiceInfo('resource', resourceKey, config.label).title}` : `Edit: ${getNiceInfo('resource', resourceKey, config.label).title}`}</h2>
         <Link to={`/admin/resource/${resourceKey}`} className="admin-btn-secondary">← Back to list</Link>
       </div>
       {error && <div className="admin-alert admin-alert-error">{error}</div>}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../../lib/api.js';
-import { getResourceConfig } from '../config/resources.js';
+import { getResourceConfig, getNiceInfo } from '../config/resources.js';
 
 export default function ResourceList() {
   const { resourceKey } = useParams();
@@ -42,7 +42,7 @@ export default function ResourceList() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h2>{config.label}</h2>
+        <div className="admin-page-head" style={{ margin: 0 }}><div><h2>{getNiceInfo('resource', resourceKey, config.label).title}</h2><p className="admin-sub">{getNiceInfo('resource', resourceKey, '').desc}</p></div></div>
         <Link to={`/admin/resource/${resourceKey}/new`} className="admin-btn">+ Add New</Link>
       </div>
       {error && <div className="admin-alert admin-alert-error">{error}</div>}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../lib/api.js';
-import { SINGLETONS } from '../config/resources.js';
+import { SINGLETONS, getNiceInfo } from '../config/resources.js';
 
 export default function SingletonEditor() {
   const { singletonKey } = useParams();
@@ -113,7 +113,7 @@ export default function SingletonEditor() {
 
   return (
     <div>
-      <h2 style={{ marginBottom: 16 }}>{config.label}</h2>
+      <div className="admin-page-head"><div><h2>{getNiceInfo('singleton', singletonKey, config.label).title}</h2><p className="admin-sub">{getNiceInfo('singleton', singletonKey, '').desc}</p></div></div>
       {error && <div className="admin-alert admin-alert-error">{error}</div>}
       {success && <div className="admin-alert admin-alert-success">Saved.</div>}
       <form onSubmit={submit} className="admin-card">

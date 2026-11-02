@@ -1,37 +1,42 @@
 import { Link } from 'react-router-dom';
-import { RESOURCES, SINGLETONS } from '../config/resources.js';
+import { getNavGroups, navPath } from '../config/resources.js';
 
 export default function Dashboard() {
+  const groups = getNavGroups();
   return (
     <div>
-      <h2 style={{ marginBottom: 20 }}>Dashboard</h2>
-      <div className="admin-card">
-        <h3>Site-wide Content</h3>
-        <p style={{ color: '#777', fontSize: 14 }}>Single, sitewide blocks (header, footer, about, etc.)</p>
-        <ul>
-          {SINGLETONS.map((s) => (
-            <li key={s.key}>
-              <Link to={`/admin/singleton/${s.key}`}>{s.label}</Link>
-            </li>
-          ))}
-        </ul>
+      <div className="admin-page-head">
+        <div>
+          <h2>Welcome back 👋</h2>
+          <p className="admin-sub">Pick the part of your website you want to change.</p>
+        </div>
       </div>
-      <div className="admin-card">
-        <h3>Collections</h3>
-        <p style={{ color: '#777', fontSize: 14 }}>Lists of repeatable content (services, posts, projects, etc.)</p>
-        <ul>
-          {RESOURCES.map((r) => (
-            <li key={r.key}>
-              <Link to={`/admin/resource/${r.key}`}>{r.label}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="admin-card">
-        <h3>Form Submissions</h3>
-        <p style={{ color: '#777', fontSize: 14 }}>
-          <Link to="/admin/submissions">View booking, contact, and newsletter submissions</Link>
-        </p>
+
+      <Link to="/admin/submissions" className="admin-hero-card">
+        <span className="admin-hero-icon">📬</span>
+        <span>
+          <strong>Messages &amp; Bookings</strong>
+          <small>See booking requests, contact messages and consultation requests</small>
+        </span>
+        <span className="admin-hero-arrow">→</span>
+      </Link>
+
+      <div className="admin-grid">
+        {groups.map((g) => (
+          <div className="admin-card admin-group-card" key={g.key}>
+            <h3>{g.icon} {g.title}</h3>
+            <ul className="admin-link-list">
+              {g.items.map((i) => (
+                <li key={`${i.type}-${i.key}`}>
+                  <Link to={navPath(i)}>
+                    <span>{i.name}</span>
+                    {i.desc && <small>{i.desc}</small>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   );

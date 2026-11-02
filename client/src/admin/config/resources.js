@@ -157,7 +157,7 @@ export const SINGLETONS = [
     ],
   },
   {
-    key: 'about-section', label: 'About Page - Content (/about only; add reels under Collections → About Page - Reels)', api: '/about-section',
+    key: 'about-section', label: 'About Page - Content (/about only)', api: '/about-section',
     fields: [
       { name: 'bioLabel', label: 'Small Label above the heading (e.g. "About Us")', type: 'text' },
       { name: 'bioHeading', label: 'Doctor Heading (e.g. "Meet Dr. Aakansh Jain")', type: 'text' },
@@ -167,9 +167,19 @@ export const SINGLETONS = [
       { name: 'images', label: 'Photos', type: 'imageArray' },
       { name: 'badgeText', label: 'Floating Badge Text (short, sits on the photo)', type: 'text' },
       { name: 'highlights', label: 'Highlight Chips (JSON array: icon + text)', type: 'json' },
+    ],
+  },
+  {
+    key: 'about-videos', label: 'About Page - YouTube / Podcast Videos (/about only)', api: '/about-section',
+    fields: [
       { name: 'featuredVideoHeading', label: 'Video Section - Heading (e.g. "Watch & Listen")', type: 'text' },
       { name: 'featuredVideoSubheading', label: 'Video Section - Small line under the heading (optional)', type: 'text' },
       { name: 'featuredVideoUrls', label: 'Video / Podcast Links - paste YouTube or Vimeo links, one per line (a single link shows one big video; several show side by side). Leave empty to hide the section', type: 'lines' },
+    ],
+  },
+  {
+    key: 'about-reels-heading', label: 'About Page - Reels Heading (/about only)', api: '/about-section',
+    fields: [
       { name: 'reelsHeading', label: 'Reels Section - Heading (e.g. "Our Reels")', type: 'text' },
       { name: 'reelsSubheading', label: 'Reels Section - Small line under the heading', type: 'text' },
     ],
@@ -393,3 +403,112 @@ export const SINGLETONS = [
     ],
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Friendly navigation layer (display-only). Groups the sidebar/dashboard by the
+// website page each item belongs to. Does NOT change any API/route/field above.
+// Anything not listed here still appears automatically under "Other".
+// ---------------------------------------------------------------------------
+export const NAV_GROUPS = [
+  {
+    key: 'home', icon: '🏠', title: 'Home Page',
+    items: [
+      { type: 'resource', key: 'slides', name: 'Top Banner Slides', desc: 'Big hero banner at the top of the home page' },
+      { type: 'singleton', key: 'home-about-section', name: 'About Box', desc: 'Short "about us" box on the home page' },
+      { type: 'singleton', key: 'booking-info-section', name: 'How To Book', desc: 'Booking instructions section' },
+      { type: 'resource', key: 'how-it-work-steps', name: 'How It Works Steps', desc: 'Numbered steps shown on the home page' },
+      { type: 'singleton', key: 'gallery-section', name: 'Before/After Heading', desc: 'Title text above the before/after photos' },
+      { type: 'resource', key: 'gallery-items', name: 'Before/After Photos', desc: 'Photos shown in the before/after gallery' },
+      { type: 'resource', key: 'testimonials', name: 'Testimonials', desc: 'Patient reviews' },
+      { type: 'resource', key: 'brand-logos', name: 'Brand Logos', desc: 'Logo strip of brands / partners' },
+    ],
+  },
+  {
+    key: 'about', icon: '👤', title: 'About Page',
+    items: [
+      { type: 'singleton', key: 'about-section', name: 'About Content', desc: 'Doctor heading, bio text, photos and highlights' },
+      { type: 'singleton', key: 'about-videos', name: 'YouTube / Podcast Videos', desc: 'Heading, small line and YouTube/Vimeo links' },
+      { type: 'singleton', key: 'about-reels-heading', name: 'Reels - Heading & Text', desc: 'Heading and small line above the reels' },
+      { type: 'resource', key: 'about-reels', name: 'Reels - Upload Videos', desc: 'Add, remove or reorder the reel videos' },
+    ],
+  },
+  {
+    key: 'centre', icon: '🏥', title: 'Know The Centre',
+    items: [
+      { type: 'singleton', key: 'centre-page', name: 'Centre Page Content', desc: 'Everything on the Know The Centre page' },
+    ],
+  },
+  {
+    key: 'services', icon: '💉', title: 'Services',
+    items: [
+      { type: 'resource', key: 'services', name: 'Services', desc: 'Add, edit or remove treatments' },
+    ],
+  },
+  {
+    key: 'projects', icon: '📸', title: 'Before/After Page',
+    items: [
+      { type: 'resource', key: 'projects', name: 'Projects', desc: 'Case studies / projects list' },
+    ],
+  },
+  {
+    key: 'blog', icon: '📝', title: 'Blog',
+    items: [
+      { type: 'resource', key: 'posts', name: 'Blog Posts', desc: 'Write and edit articles' },
+    ],
+  },
+  {
+    key: 'consult', icon: '💬', title: 'Online Consultation',
+    items: [
+      { type: 'singleton', key: 'consultation-section', name: 'Consultation Page Content', desc: 'Text on the Online Consultation page' },
+    ],
+  },
+  {
+    key: 'contact', icon: '📞', title: 'Contact & Booking',
+    items: [
+      { type: 'singleton', key: 'contact-info', name: 'Contact Info', desc: 'Phone, email, address on the Contact page' },
+      { type: 'singleton', key: 'booking-section', name: 'Booking Section', desc: 'Booking form area text' },
+    ],
+  },
+  {
+    key: 'global', icon: '⚙️', title: 'Whole Website',
+    items: [
+      { type: 'singleton', key: 'site-settings', name: 'Site Settings', desc: 'Logo, header phone/email, footer text' },
+      { type: 'resource', key: 'nav-items', name: 'Menu Links', desc: 'Links in the top navigation menu' },
+    ],
+  },
+  {
+    key: 'seo', icon: '🔎', title: 'Browser Tab Titles (SEO)',
+    items: [
+      { type: 'singleton', key: 'page-meta-home', name: 'Home Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-about', name: 'About Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-centre', name: 'Know The Centre Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-services', name: 'Services Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-projects', name: 'Before/After Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-blog', name: 'Blog Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-contact', name: 'Contact Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-thank-you', name: 'Thank You Page', desc: 'Title shown on the browser tab' },
+      { type: 'singleton', key: 'page-meta-online-consultation', name: 'Online Consultation Page', desc: 'Title shown on the browser tab' },
+    ],
+  },
+];
+
+export const navPath = (it) => (it.type === 'singleton' ? `/admin/singleton/${it.key}` : `/admin/resource/${it.key}`);
+
+// Groups + an automatic "Other" group so no existing item can ever go missing.
+export function getNavGroups() {
+  const listed = new Set(NAV_GROUPS.flatMap((g) => g.items.map((i) => `${i.type}:${i.key}`)));
+  const extra = [
+    ...SINGLETONS.filter((s) => !listed.has(`singleton:${s.key}`)).map((s) => ({ type: 'singleton', key: s.key, name: s.label, desc: '' })),
+    ...RESOURCES.filter((r) => !listed.has(`resource:${r.key}`)).map((r) => ({ type: 'resource', key: r.key, name: r.label, desc: '' })),
+  ];
+  return extra.length ? [...NAV_GROUPS, { key: 'other', icon: '📦', title: 'Other', items: extra }] : NAV_GROUPS;
+}
+
+// Friendly page title / help text for the editor screens.
+export function getNiceInfo(type, key, fallback) {
+  for (const g of getNavGroups()) {
+    const it = g.items.find((i) => i.type === type && i.key === key);
+    if (it) return { title: g.key === 'seo' ? `Browser Tab Title – ${it.name}` : it.name, desc: it.desc, group: g.title };
+  }
+  return { title: fallback, desc: '', group: '' };
+}
