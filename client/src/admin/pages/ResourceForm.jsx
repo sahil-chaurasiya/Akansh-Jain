@@ -27,6 +27,8 @@ export default function ResourceForm() {
     return initial;
   });
   const [imageFiles, setImageFiles] = useState({});
+  // image fields the admin clicked "Remove image" on (deleted for real when Save is clicked).
+  const [removedImages, setRemovedImages] = useState({});
   // video fields (e.g. About reels): the file picked now + the already-saved video's URL.
   const [videoFiles, setVideoFiles] = useState({});
   const [existingVideos, setExistingVideos] = useState({});
@@ -100,6 +102,12 @@ export default function ResourceForm() {
         fd.append(fieldName === config.imageField ? 'image' : fieldName, file);
       });
 
+      // Fields the admin chose to remove (and didn't replace with a new upload).
+      const imagesToRemove = config.fields
+        .filter((f) => f.type === 'image' && removedImages[f.name] && !imageFiles[f.name])
+        .map((f) => f.name);
+      if (imagesToRemove.length) fd.append('removeImages', JSON.stringify(imagesToRemove));
+
       Object.entries(videoFiles).forEach(([fieldName, file]) => {
         if (file) fd.append(fieldName, file);
       });
@@ -126,6 +134,14 @@ export default function ResourceForm() {
         navigate(`/admin/resource/${resourceKey}/${res.data.data._id}`);
       } else {
         await api.put(`${config.api}/${id}`, fd);
+        if (imagesToRemove.length) {
+          setExistingImages((prev) => {
+            const next = { ...prev };
+            imagesToRemove.forEach((n) => delete next[n]);
+            return next;
+          });
+          setRemovedImages({});
+        }
       }
       setSaving(false);
     } catch (err) {
@@ -149,8 +165,29 @@ export default function ResourceForm() {
             return (
               <div className="admin-form-group" key={f.name}>
                 <label>{f.label}</label>
-                {existingImages[f.name] && !imageFiles[f.name] && (
-                  <img src={existingImages[f.name]} alt="" style={{ width: 100, display: 'block', marginBottom: 8, borderRadius: 4 }} />
+                {existingImages[f.name] && !imageFiles[f.name] && !removedImages[f.name] && (
+                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, marginBottom: 8 }}>
+                    <img src={existingImages[f.name]} alt="" style={{ width: 100, display: 'block', borderRadius: 4 }} />
+                    <button
+                      type="button"
+                      className="admin-btn-danger"
+                      onClick={() => setRemovedImages((p) => ({ ...p, [f.name]: true }))}
+                    >
+                      Remove image
+                    </button>
+                  </div>
+                )}
+                {removedImages[f.name] && !imageFiles[f.name] && (
+                  <p style={{ fontSize: 13, color: '#c0392b', marginBottom: 8 }}>
+                    This image will be deleted when you click Save.{' '}
+                    <button
+                      type="button"
+                      onClick={() => setRemovedImages((p) => ({ ...p, [f.name]: false }))}
+                      style={{ background: 'none', border: 'none', color: '#333', textDecoration: 'underline', cursor: 'pointer', padding: 0, fontSize: 13 }}
+                    >
+                      Undo
+                    </button>
+                  </p>
                 )}
                 <input type="file" accept="image/*" onChange={(e) => setImageFiles((p) => ({ ...p, [f.name]: e.target.files[0] }))} />
               </div>
@@ -215,15 +252,32 @@ export default function ResourceForm() {
                     </div>
                   ))}
                 </div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) =>
-                    setImageArrayNewFiles((p) => ({ ...p, [f.name]: [...(p[f.name] || []), ...Array.from(e.target.files)] }))
-                  }
-                />
-                <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>Add one or more photos. Click × to remove one.</p>
+                {(() => {
+                  const total = kept.length + pending.length;
+                  const full = !!f.max && total >= f.max;
+                  return (
+                    <>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        disabled={full}
+                        onChange={(e) => {
+                          const picked = Array.from(e.target.files);
+                          // Respect the field's max (e.g. 5 client profile photos): extra picks are dropped.
+                          const room = f.max ? Math.max(0, f.max - total) : picked.length;
+                          setImageArrayNewFiles((p) => ({ ...p, [f.name]: [...(p[f.name] || []), ...picked.slice(0, room)] }));
+                          e.target.value = '';
+                        }}
+                      />
+                      <p style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
+                        {f.max
+                          ? `Up to ${f.max} photos (${total}/${f.max} added${full ? ' — remove one with × to add another' : ''}). Click × to remove one.`
+                          : 'Add one or more photos. Click × to remove one.'}
+                      </p>
+                    </>
+                  );
+                })()}
               </div>
             );
           }

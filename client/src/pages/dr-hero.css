@@ -212,3 +212,25 @@
     border-right: none;
   }
 }
+
+/* "Happy clients" card: overlapping round profile photos (up to 5, uploaded from the admin).
+   Any upload size/shape works — each photo is cropped to a circle. */
+.dr-hero-float-card .dr-hero-avatars {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dr-hero-float-card .dr-hero-avatars img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  background: #3a2347;
+  display: block;
+}
+
+.dr-hero-float-card .dr-hero-avatars img + img {
+  margin-left: -14px;
+}

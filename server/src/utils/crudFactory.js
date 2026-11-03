@@ -1,6 +1,21 @@
 import asyncHandler from 'express-async-handler';
 import { uploadBufferToCloudinary, deleteFromCloudinary } from '../middleware/upload.js';
 
+// Parses the optional `removeImages` body field (a JSON string from multipart forms, or a
+// real array from JSON bodies) into a clean array of field names the admin asked to clear.
+const parseRemoveList = (raw) => {
+  if (Array.isArray(raw)) return raw.filter((n) => typeof n === 'string');
+  if (typeof raw === 'string' && raw.trim()) {
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed.filter((n) => typeof n === 'string') : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+};
+
 /**
  * Generic CRUD handlers for simple list-type collections (services, testimonials, etc).
  * Handles optional single-image field upload via multer (req.file) -> Cloudinary.
@@ -122,6 +137,16 @@ export const makeCrudController = (Model, options = {}) => {
         await deleteFromCloudinary(item[fieldName].publicId);
       }
     }
+    // Admin clicked "Remove image" on one or more single-image fields (and didn't upload a
+    // replacement): delete the file from Cloudinary and clear the stored url/publicId.
+    for (const fieldName of parseRemoveList(body.removeImages)) {
+      if (!imageFields.includes(fieldName) || files[fieldName]) continue;
+      if (item[fieldName]?.publicId) {
+        await deleteFromCloudinary(item[fieldName].publicId);
+      }
+      body[fieldName] = { url: '', publicId: '' };
+    }
+    delete body.removeImages;
     for (const fieldName of arrayImageFields) {
       if (body[fieldName] === undefined) continue;
       const newArr = parseArrayImageField(body[fieldName]);
@@ -188,7 +213,17 @@ export const makeSingletonController = (Model) => {
   const update = asyncHandler(async (req, res) => {
     let item = await Model.findOne();
     if (!item) item = new Model();
-    Object.assign(item, req.body);
+    const { removeImages, ...rest } = req.body;
+    Object.assign(item, rest);
+    // Admin clicked "Remove image": clear the stored image and delete it from Cloudinary.
+    // Only genuine image fields (those with a nested url/publicId) can be cleared this way.
+    for (const fieldName of parseRemoveList(removeImages)) {
+      if (!item.schema.path(`${fieldName}.publicId`)) continue;
+      if (rest[fieldName]?.url) continue; // a new image was uploaded for this field — keep it
+      const oldPublicId = item[fieldName]?.publicId;
+      if (oldPublicId) await deleteFromCloudinary(oldPublicId);
+      item[fieldName] = { url: '', publicId: '' };
+    }
     await item.save();
     res.json({ success: true, data: item });
   });

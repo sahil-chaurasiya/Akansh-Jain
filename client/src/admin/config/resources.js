@@ -22,7 +22,8 @@ export const RESOURCES = [
       { name: 'order', label: 'Order', type: 'number' },
       { name: 'image', label: 'Slide Background Image', type: 'image' },
       { name: 'heroImage', label: 'Hero Photo (right side of banner)', type: 'image' },
-      { name: 'clientAvatarsImage', label: 'Client Avatars Icon ("2,000+ Happy Clients")', type: 'image' },
+      { name: 'clientAvatars', label: 'Client Profile Photos (up to 5 small round faces in the "Happy Clients" card)', type: 'imageArray', max: 5 },
+      { name: 'clientAvatarsImage', label: 'Old single avatars image (only used if no profile photos are added above)', type: 'image' },
     ],
   },
   {

@@ -6,7 +6,12 @@ import { upload } from '../middleware/upload.js';
 
 const router = express.Router();
 const SLIDE_IMAGE_FIELDS = ['image', 'heroImage', 'clientAvatarsImage'];
-const ctrl = makeCrudController(Slide, { imageField: 'image', imageFields: SLIDE_IMAGE_FIELDS, searchable: ['headline'] });
+const ctrl = makeCrudController(Slide, {
+  imageField: 'image',
+  imageFields: SLIDE_IMAGE_FIELDS,
+  arrayImageFields: ['clientAvatars'],
+  searchable: ['headline'],
+});
 const uploadSlideImages = upload.fields(SLIDE_IMAGE_FIELDS.map((name) => ({ name, maxCount: 1 })));
 
 // Public

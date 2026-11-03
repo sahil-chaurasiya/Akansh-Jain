@@ -5,6 +5,9 @@ const slideSchema = new mongoose.Schema(
     image: { url: String, publicId: String },
     heroImage: { url: String, publicId: String },
     clientAvatarsImage: { url: String, publicId: String },
+    // Up to 5 small profile photos shown as an overlapping avatar stack in the hero's
+    // "Happy Clients" card. When empty, the old single clientAvatarsImage is used instead.
+    clientAvatars: [{ url: String, publicId: String }],
     headline: { type: String, required: true, trim: true },
     subheading: { type: String, default: '' },
     ctaText: { type: String, default: '' },

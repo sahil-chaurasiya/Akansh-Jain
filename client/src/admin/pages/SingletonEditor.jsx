@@ -8,6 +8,8 @@ export default function SingletonEditor() {
   const config = SINGLETONS.find((s) => s.key === singletonKey);
   const [values, setValues] = useState({});
   const [imageFiles, setImageFiles] = useState({});
+  // image fields the admin clicked "Remove image" on (deleted for real when Save is clicked).
+  const [removedImages, setRemovedImages] = useState({});
   const [existingImages, setExistingImages] = useState({});
   // imageArray fields (e.g. AboutSection.images): existing = already-saved {url,publicId} list,
   // newFiles = freshly-picked File objects waiting to be uploaded on save.
@@ -99,7 +101,21 @@ export default function SingletonEditor() {
         }
       }
 
+      // Fields the admin chose to remove (and didn't replace with a new upload).
+      const imagesToRemove = config.fields
+        .filter((f) => f.type === 'image' && removedImages[f.name] && !imageFiles[f.name])
+        .map((f) => f.name);
+      if (imagesToRemove.length) payload.removeImages = imagesToRemove;
+
       await api.put(config.api, payload);
+      if (imagesToRemove.length) {
+        setExistingImages((prev) => {
+          const next = { ...prev };
+          imagesToRemove.forEach((n) => { next[n] = ''; });
+          return next;
+        });
+        setRemovedImages({});
+      }
       setSuccess(true);
     } catch (err) {
       setError(err.message || err.response?.data?.message || 'Save failed');
@@ -122,8 +138,29 @@ export default function SingletonEditor() {
             return (
               <div className="admin-form-group" key={f.name}>
                 <label>{f.label}</label>
-                {existingImages[f.name] && !imageFiles[f.name] && (
-                  <img src={existingImages[f.name]} alt="" style={{ width: 100, display: 'block', marginBottom: 8, borderRadius: 4 }} />
+                {existingImages[f.name] && !imageFiles[f.name] && !removedImages[f.name] && (
+                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, marginBottom: 8 }}>
+                    <img src={existingImages[f.name]} alt="" style={{ width: 100, display: 'block', borderRadius: 4 }} />
+                    <button
+                      type="button"
+                      className="admin-btn-danger"
+                      onClick={() => setRemovedImages((p) => ({ ...p, [f.name]: true }))}
+                    >
+                      Remove image
+                    </button>
+                  </div>
+                )}
+                {removedImages[f.name] && !imageFiles[f.name] && (
+                  <p style={{ fontSize: 13, color: '#c0392b', marginBottom: 8 }}>
+                    This image will be deleted when you click Save.{' '}
+                    <button
+                      type="button"
+                      onClick={() => setRemovedImages((p) => ({ ...p, [f.name]: false }))}
+                      style={{ background: 'none', border: 'none', color: '#333', textDecoration: 'underline', cursor: 'pointer', padding: 0, fontSize: 13 }}
+                    >
+                      Undo
+                    </button>
+                  </p>
                 )}
                 <input type="file" accept="image/*" onChange={(e) => setImageFiles((p) => ({ ...p, [f.name]: e.target.files[0] }))} />
               </div>

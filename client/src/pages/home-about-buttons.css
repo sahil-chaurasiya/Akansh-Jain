@@ -46,3 +46,10 @@
     flex: 1 1 100%;
   }
 }
+/* Remove the light-violet frame (background + padding + rounded border) the base
+   theme draws around the main photo in the home "About Us" section. */
+.s-about-box {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}

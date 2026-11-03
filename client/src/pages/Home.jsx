@@ -54,6 +54,8 @@ export default function Home() {
   useLegacyScripts(ready, [data]);
 
   const slide = data.slides?.[0];
+  // Up to 5 small profile photos for the "Happy Clients" card (falls back to the single icon image).
+  const clientAvatars = (slide?.clientAvatars || []).filter((a) => a?.url).slice(0, 5);
 
   return (
     <Layout>
@@ -85,7 +87,15 @@ export default function Home() {
                   </Link>
 
                   <div className="dr-hero-float-card">
-                    <img src="/assets/img/slider/h-client-img.png" alt="Happy clients" />
+                    {clientAvatars.length > 0 ? (
+                      <div className="dr-hero-avatars">
+                        {clientAvatars.map((a, i) => (
+                          <img key={a.publicId || a.url || i} src={a.url} alt="Happy client" />
+                        ))}
+                      </div>
+                    ) : (
+                      <img src={slide?.clientAvatarsImage?.url || '/assets/img/slider/h-client-img.png'} alt="Happy clients" />
+                    )}
                     <div>
                       <strong>{slide?.happyClientsCount || '2,000+'}</strong>
                       <span>{slide?.happyClientsLabel || 'Happy Clients'}</span>
