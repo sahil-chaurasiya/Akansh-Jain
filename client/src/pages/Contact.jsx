@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../lib/api.js';
+import { openWhatsApp } from '../lib/whatsapp.js';
 import Layout from '../components/Layout.jsx';
 import PageMeta from '../components/PageMeta.jsx';
 import Breadcrumb from '../components/Breadcrumb.jsx';
@@ -34,15 +35,19 @@ export default function Contact() {
   const mapEmbedUrl = info?.mapEmbedUrl;
   const telHref = `tel:${phone.replace(/[^\d+]/g, '')}`;
 
-  const submit = async (e) => {
+  // Contact form now goes straight to WhatsApp instead of being saved in the DB.
+  const submit = (e) => {
     e.preventDefault();
-    setStatus('loading');
-    try {
-      await api.post('/submissions/contact', form);
-      navigate('/thank-you');
-    } catch (err) {
-      setStatus(err.response?.data?.message || 'Something went wrong');
-    }
+    const lines = [
+      'Hi Dr. Aakansh Jain, I have a message from the website contact form.',
+      '',
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+    ];
+    if (form.subject) lines.push(`Subject: ${form.subject}`);
+    lines.push(`Message: ${form.message}`);
+    openWhatsApp(lines.join('\n'));
+    navigate('/thank-you');
   };
 
   return (

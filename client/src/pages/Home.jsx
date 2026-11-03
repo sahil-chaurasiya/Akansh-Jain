@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../lib/api.js';
+import { openWhatsApp } from '../lib/whatsapp.js';
 import Layout from '../components/Layout.jsx';
 import PageMeta from '../components/PageMeta.jsx';
 import { useLegacyScripts } from '../hooks/useLegacyScripts.js';
@@ -594,16 +595,20 @@ function BookingForm() {
   const [form, setForm] = useState({ name: '', email: '', service: '', message: '' });
   const [status, setStatus] = useState(null);
 
-  const submit = async (e) => {
+  // Booking form now goes straight to WhatsApp instead of being saved in the DB.
+  const submit = (e) => {
     e.preventDefault();
-    setStatus('loading');
-    try {
-      await api.post('/submissions/booking', form);
-      setStatus('success');
-      setForm({ name: '', email: '', service: '', message: '' });
-    } catch (err) {
-      setStatus(err.response?.data?.message || 'Something went wrong');
-    }
+    const lines = [
+      'Hi Dr. Aakansh Jain, I would like to book an appointment.',
+      '',
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+    ];
+    if (form.service) lines.push(`Service: ${form.service}`);
+    if (form.message) lines.push(`Comments: ${form.message}`);
+    openWhatsApp(lines.join('\n'));
+    setStatus('success');
+    setForm({ name: '', email: '', service: '', message: '' });
   };
 
   return (

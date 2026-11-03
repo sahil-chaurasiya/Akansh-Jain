@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../lib/api.js';
+import { openWhatsApp } from '../lib/whatsapp.js';
 import Layout from '../components/Layout.jsx';
 import PageMeta from '../components/PageMeta.jsx';
 import Breadcrumb from '../components/Breadcrumb.jsx';
@@ -160,26 +161,15 @@ export default function Consultation() {
     return lines.join('\n');
   };
 
-  const submit = async (e) => {
+  const submit = (e) => {
     e.preventDefault();
     if (!form.consentAgreed) {
       setStatus('Please agree to the Informed Consent for Telemedicine Consultation before submitting.');
       return;
     }
-    setStatus('loading');
 
-    // Keep a record in the admin panel's Form Submissions, same as before —
-    // but don't let a slow/failed save block the WhatsApp handoff below,
-    // since sharing on WhatsApp (with the payment screenshot) is the actual
-    // point of this form now, not the in-app submission.
-    try {
-      await api.post('/submissions/consultation', form);
-    } catch (err) {
-      // Swallow — WhatsApp handoff still proceeds so the person doesn't get stuck.
-    }
-
-    const waLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildWhatsappMessage())}`;
-    window.open(waLink, '_blank', 'noopener,noreferrer');
+    // No DB save any more — the booking goes straight to WhatsApp.
+    openWhatsApp(buildWhatsappMessage(), whatsappNumber);
     navigate('/thank-you');
   };
 
