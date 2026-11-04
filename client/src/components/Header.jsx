@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../lib/api.js';
+import { formatPhone } from '../lib/phone.js';
 
 const FALLBACK_NAV = [
   { _id: 'home', label: 'Home', link: '/' },
@@ -152,7 +153,7 @@ export default function Header() {
                       <div className="icon">
                         <img src="/assets/img/icon/header-picon.png" alt="phone" />
                       </div>{' '}
-                      <span>{phone}</span>
+                      <span>{formatPhone(phone)}</span>
                     </li>
                     <li>
                       <Link to={ctaLink} className="btn top-btn">

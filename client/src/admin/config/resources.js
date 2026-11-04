@@ -195,6 +195,13 @@ export const SINGLETONS = [
     ],
   },
   {
+    key: 'testimonial-section', label: 'Home Page - Testimonials Button (/ only)', api: '/testimonial-section',
+    fields: [
+      { name: 'buttonText', label: 'Button Text (e.g. "Share your Feedback") — leave EMPTY to hide the button', type: 'text' },
+      { name: 'buttonLink', label: 'Button Link (e.g. your Google review link — opens in a new tab)', type: 'text' },
+    ],
+  },
+  {
     key: 'centre-page', label: 'Know The Centre Page (/know-the-centre)', api: '/centre-page',
     fields: [
       { name: 'welcomeHeading', label: 'Top Heading (e.g. "Welcome To Natural Cosmetic Surgery Centre")', type: 'text' },
@@ -421,6 +428,7 @@ export const NAV_GROUPS = [
       { type: 'singleton', key: 'gallery-section', name: 'Before/After Heading', desc: 'Title text above the before/after photos' },
       { type: 'resource', key: 'gallery-items', name: 'Before/After Photos', desc: 'Photos shown in the before/after gallery' },
       { type: 'resource', key: 'testimonials', name: 'Testimonials', desc: 'Patient reviews' },
+      { type: 'singleton', key: 'testimonial-section', name: 'Testimonials Button', desc: '"Share your Feedback" button and its link, shown under the testimonials' },
       { type: 'resource', key: 'brand-logos', name: 'Brand Logos', desc: 'Logo strip of brands / partners' },
     ],
   },

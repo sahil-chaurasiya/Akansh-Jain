@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../lib/api.js';
 import { openWhatsApp } from '../lib/whatsapp.js';
+import { formatPhone, phoneHref } from '../lib/phone.js';
 import Layout from '../components/Layout.jsx';
 import PageMeta from '../components/PageMeta.jsx';
 import Breadcrumb from '../components/Breadcrumb.jsx';
@@ -33,7 +34,8 @@ export default function Contact() {
   const email = info?.email || FALLBACK_EMAIL;
   const officeHours = info?.officeHours;
   const mapEmbedUrl = info?.mapEmbedUrl;
-  const telHref = `tel:${phone.replace(/[^\d+]/g, '')}`;
+  const telHref = phoneHref(phone);
+  const displayPhone = formatPhone(phone);
 
   // Contact form now goes straight to WhatsApp instead of being saved in the DB.
   const submit = (e) => {
@@ -68,7 +70,7 @@ export default function Contact() {
 
           <div className="cp-quick">
             <a className="cp-pill" href={telHref}>
-              <i className="fa-solid fa-phone"></i> {phone}
+              <i className="fa-solid fa-phone"></i> {displayPhone}
             </a>
             <a className="cp-pill" href={`mailto:${email}`}>
               <i className="fa-solid fa-envelope"></i> {email}
@@ -104,7 +106,7 @@ export default function Contact() {
                 </div>
                 <div className="cp-info-text">
                   <h4>Phone</h4>
-                  <a href={telHref}>{phone}</a>
+                  <a href={telHref}>{displayPhone}</a>
                 </div>
               </div>
 

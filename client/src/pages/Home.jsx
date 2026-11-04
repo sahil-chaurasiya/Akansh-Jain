@@ -17,7 +17,7 @@ export default function Home() {
   const [data, setData] = useState({
     slides: [], homeAbout: null, services: [], bookingInfo: null,
     howItWork: [], bookingSection: null, testimonials: [],
-    gallery: [], posts: [], settings: null, gallerySection: null,
+    gallery: [], posts: [], settings: null, gallerySection: null, testimonialSection: null,
   });
   const [ready, setReady] = useState(false);
 
@@ -33,8 +33,10 @@ export default function Home() {
       api.get('/gallery-items?limit=6'),
       api.get('/posts'),
       api.get('/gallery-section'),
+      // If this ever fails the page still loads and the button just uses its built-in defaults.
+      api.get('/testimonial-section').catch(() => ({ data: { data: null } })),
     ])
-      .then(([slides, homeAbout, services, bookingInfo, how, booking, testi, gallery, posts, gallerySection]) => {
+      .then(([slides, homeAbout, services, bookingInfo, how, booking, testi, gallery, posts, gallerySection, testimonialSection]) => {
         setData({
           slides: slides.data.data,
           homeAbout: homeAbout.data.data,
@@ -46,6 +48,7 @@ export default function Home() {
           gallery: gallery.data.data,
           posts: posts.data.data,
           gallerySection: gallerySection.data.data,
+          testimonialSection: testimonialSection.data.data,
         });
       })
       .finally(() => setReady(true));
@@ -56,6 +59,10 @@ export default function Home() {
   const slide = data.slides?.[0];
   // Up to 5 small profile photos for the "Happy Clients" card (falls back to the single icon image).
   const clientAvatars = (slide?.clientAvatars || []).filter((a) => a?.url).slice(0, 5);
+  // "Share your Feedback" button under the testimonials (editable in admin). Empty text = hidden.
+  const feedbackText = (data.testimonialSection?.buttonText ?? 'Share your Feedback').trim();
+  const feedbackLinkRaw = (data.testimonialSection?.buttonLink || 'https://g.page/r/CaZIWf_kXlxOEAE/review').trim();
+  const feedbackLink = /^(https?:|mailto:|tel:|\/)/i.test(feedbackLinkRaw) ? feedbackLinkRaw : `https://${feedbackLinkRaw}`;
 
   return (
     <Layout>
@@ -476,6 +483,16 @@ export default function Home() {
               </div>
             ))}
           </div>
+          {/* "Share your Feedback" button — text + link editable from admin (Home Page > Testimonials Button). Empty text hides it. */}
+          {feedbackText && (
+            <div className="row">
+              <div className="col-12 text-center mt-20">
+                <a href={feedbackLink} target="_blank" rel="noopener noreferrer" className="btn btn2">
+                  {feedbackText} <i className="fa-light fa-arrow-right-long"></i>
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

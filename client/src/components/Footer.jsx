@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../lib/api.js';
+import { formatPhone, phoneHref } from '../lib/phone.js';
 import './Footer.css';
 
 // Same WhatsApp number used by the floating WhatsApp button and the Contact page.
@@ -139,7 +140,7 @@ export default function Footer() {
                       </div>
                       <div className="text">
                         <h4>Call</h4>
-                        <a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a>
+                        <a href={phoneHref(phone)}>{formatPhone(phone)}</a>
                       </div>
                     </li>
                     <li>

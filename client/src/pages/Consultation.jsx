@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../lib/api.js';
 import { openWhatsApp } from '../lib/whatsapp.js';
+import { formatPhone } from '../lib/phone.js';
 import Layout from '../components/Layout.jsx';
 import PageMeta from '../components/PageMeta.jsx';
 import Breadcrumb from '../components/Breadcrumb.jsx';
@@ -378,7 +379,7 @@ export default function Consultation() {
                   UPI ID: <strong>{data.upiId}</strong>
                 </p>
                 <p className="oc-payment-line">
-                  Mob: <strong>{data.paymentMobile}</strong>
+                  Mob: <strong>{formatPhone(data.paymentMobile)}</strong>
                 </p>
                 {data.paymentNote && <p className="oc-payment-note">{data.paymentNote}</p>}
               </div>
